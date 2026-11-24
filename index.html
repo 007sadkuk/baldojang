@@ -133,6 +133,9 @@ input[type=file]{font:15px 'Pretendard',sans-serif;color:var(--sub)}
 .anv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;align-items:start}.anv canvas,.anv img{width:100%;max-width:360px;border-radius:8px;display:block}
 .sws{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sw{display:grid;gap:8px}.sw i{display:block;aspect-ratio:1;border-radius:10px;border:1px solid rgba(128,128,128,.25)}.sw b{font-size:14px;font-weight:700}.sw small{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
 .use{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+.dtw{position:relative;display:block}.dtw input.dt{padding-right:52px}
+.cal{position:absolute;right:0;bottom:6px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}.cal:hover{background:var(--soft)}
+.dtw input[type=date]{position:absolute;right:0;bottom:6px;width:44px;height:44px;opacity:0;pointer-events:none;border:0;padding:0}
 footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
 @media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
 </style>
@@ -181,7 +184,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div class="f"><span class="lab">종류</span><div class="pills" role="radiogroup" aria-label="종류">
 <label class="pill"><input type="radio" name="kind" value="dog" checked><span>강아지</span></label>
 <label class="pill"><input type="radio" name="kind" value="cat"><span>고양이</span></label></div></div>
-<div class="f"><label for="adopt">우리 가족이 된 날</label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><span class="hint">숫자만 쭉 입력하면 돼요 (예: 20230503). 정확히 모르면 처음 만난 날, 이름 지어준 날처럼 기념하고 싶은 날을 넣어 주세요.</span></div>
+<div class="f"><label for="adopt">우리 가족이 된 날</label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><span class="hint">숫자만 쭉 입력하거나 (예: 20230503) 옆 달력 버튼으로 고르세요. 정확히 모르면 처음 만난 날, 이름 지어준 날처럼 기념하고 싶은 날을 넣어 주세요.</span></div>
 <div class="f"><label for="birth">혹시 생일도 아시나요? <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><span class="hint">알면 '타고난 기질'을 따로 보여드려요.</span></div>
 <div class="f"><label for="photo">아이 사진 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="file" id="photo" accept="image/*"><span class="hint">사진은 이 화면 안에서만 쓰이고 어디에도 올라가지 않아요.</span></div>
 <div class="f"><label for="owner">보호자 생년월일 (양력)</label><input type="text" id="owner" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="1990.03.15"><span class="hint">음력 생일이라면 양력으로 바꿔 넣어 주세요.</span></div>
@@ -432,7 +435,22 @@ $('#photo').addEventListener('change', e => { const f = e.target.files[0]; if (p
 try { const s = JSON.parse(localStorage.getItem('baldojang-form')||'{}'); for (const k of ['name','adopt','birth','owner']) if (s[k]) $('#'+k).value = s[k]; if (s.kind) { const r = document.querySelector(`input[name=kind][value=${s.kind}]`); if (r) r.checked = true; } } catch(e) {}
 const today = new Date(); const tnum = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
 const pad = p => `${p[0]}.${String(p[1]).padStart(2,'0')}.${String(p[2]).padStart(2,'0')}`;
+const CAL_SVG = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+function attachCal(el) {
+  if (el.dataset.cal) return; el.dataset.cal = '1';
+  const w = document.createElement('span'); w.className = 'dtw'; el.parentNode.insertBefore(w, el); w.appendChild(el);
+  const d = document.createElement('input'); d.type = 'date'; d.tabIndex = -1; d.setAttribute('aria-hidden', 'true'); d.min = '1920-01-01';
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'cal'; b.setAttribute('aria-label', '달력에서 날짜 고르기'); b.innerHTML = CAL_SVG;
+  w.appendChild(d); w.appendChild(b);
+  b.addEventListener('click', () => {
+    const p = parse(el.value); d.value = p ? `${p[0]}-${String(p[1]).padStart(2,'0')}-${String(p[2]).padStart(2,'0')}` : '';
+    const td = new Date(); d.max = `${td.getFullYear()}-${String(td.getMonth()+1).padStart(2,'0')}-${String(td.getDate()).padStart(2,'0')}`;
+    try { if (d.showPicker) d.showPicker(); else { d.style.pointerEvents = 'auto'; d.focus(); d.click(); d.style.pointerEvents = ''; } } catch (e) { d.style.pointerEvents = 'auto'; d.focus(); d.click(); d.style.pointerEvents = ''; }
+  });
+  d.addEventListener('change', () => { const p = parse(d.value); if (p) { el.value = pad(p); el.dispatchEvent(new Event('input')); el.value = pad(p); } });
+}
 document.querySelectorAll('.dt').forEach(el => { const p0 = parse(el.value); el.value = p0 ? pad(p0) : fmtIn(el.value); el.addEventListener('input', () => { el.value = fmtIn(el.value); }); el.addEventListener('blur', () => { const p = parse(el.value); if (p) el.value = pad(p); }); });
+document.querySelectorAll('form .dt').forEach(attachCal);
 
 $('#f').addEventListener('submit', e => {
   e.preventDefault();
@@ -510,7 +528,7 @@ function bindDt(el) { el.addEventListener('input', () => { el.value = fmtIn(el.v
 function addRow(box, ph1, ph2) {
   const r = document.createElement('div'); r.className = 'row';
   r.innerHTML = `<input type="text" maxlength="12" autocomplete="off" aria-label="이름" placeholder="${ph1}"><input type="text" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="날짜" placeholder="${ph2}"><button type="button" class="x" aria-label="이 줄 지우기">×</button>`;
-  bindDt(r.children[1]); r.children[2].addEventListener('click', () => { if (box.children.length > 1) r.remove(); else { r.children[0].value = ''; r.children[1].value = ''; } });
+  const dtEl = r.children[1], xb = r.children[2]; bindDt(dtEl); attachCal(dtEl); xb.addEventListener('click', () => { if (box.children.length > 1) r.remove(); else { r.querySelector('input').value = ''; dtEl.value = ''; } });
   box.appendChild(r); return r;
 }
 const famBox = $('#famrows'), sibBox = $('#sibrows');
@@ -521,11 +539,11 @@ $('#sibadd').addEventListener('click', () => { if (sibBox.children.length < 6) a
 function readRows(box, errEl, what) {
   const out = []; errEl.textContent = '';
   for (const r of box.children) {
-    const n = r.children[0].value.trim(), v = r.children[1].value.trim();
+    const n = r.children[0].value.trim(), dtI = r.querySelector('input.dt'), v = dtI.value.trim();
     if (!n && !v) continue;
     const p = parse(v);
     if (!n) { errEl.textContent = `${what} 이름을 넣어 주세요.`; r.children[0].focus(); return null; }
-    if (!p || num(p) > tnum || p[0] < 1920) { errEl.textContent = `${n}의 날짜를 다시 확인해 주세요. (예: 1990.03.15)`; r.children[1].focus(); return null; }
+    if (!p || num(p) > tnum || p[0] < 1920) { errEl.textContent = `${n}의 날짜를 다시 확인해 주세요. (예: 1990.03.15)`; dtI.focus(); return null; }
     out.push({ n, p });
   }
   if (!out.length) { errEl.textContent = `${what}을(를) 한 명 이상 넣어 주세요.`; return null; }
