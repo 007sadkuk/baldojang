@@ -1,5 +1,6 @@
 // API 응답 구조 확인용: 인증키는 절대 출력하지 않음
-import { writeFileSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
+mkdirSync('data', { recursive: true });
 const KEY = (process.env.ANIMAL_API_KEY || '').trim();
 const hide = t => KEY ? String(t).split(KEY).join('***').split(encodeURIComponent(KEY)).join('***').split(decodeURIComponent(KEY)).join('***') : String(t);
 const cands = [

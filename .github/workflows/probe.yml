@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - name: API 호출
-        run: node scripts/probe.mjs || echo '{"crashed":true}' > data/probe.json
+        run: mkdir -p data && node scripts/probe.mjs || echo '{"crashed":true}' > data/probe.json
         env:
           ANIMAL_API_KEY: ${{ secrets.ANIMAL_API_KEY }}
       - name: 결과 요약
