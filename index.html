@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>발도장 — 반려동물 사주</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@900&display=swap">
+<style>
+/* VOICE: 화보 잡지처럼 굵고 짧게, 다정하게
+   IDEA: 오방색 배경지 앞에서 찍은 반려동물 스튜디오 화보 + 사주 도장
+   PICTURE: 오방색 배경의 실사 화보, 결과는 아이 사진 또는 오행색 + 큰 한자
+   COLOUR and TYPE: 흰 바탕·먹색, 오방색 5색 면, Pretendard 800 타이트 자간 + 한자 Noto Sans KR 900
+   LAYOUT: 풀블리드 띠 단위, 폼은 한 줄 칼럼, 결과는 리포트처럼 위에서 아래로 */
+@font-face{font-family:'Pretendard';src:url('PretendardVariable.woff2') format('woff2-variations');font-weight:45 920;font-display:swap}
+:root{color-scheme:light dark;--bg:light-dark(#fff,#121212);--ink:light-dark(#141414,#f2f2f2);--sub:light-dark(#5a5a5a,#b0b0b0);--line:light-dark(#141414,#f2f2f2);--soft:light-dark(#f3f2ef,#1e1e1e);--red:#C42A1E}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 'Pretendard',system-ui,-apple-system,sans-serif;overflow-x:clip;word-break:keep-all;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.045em;line-height:1.12;text-wrap:balance}
+p{margin:0}a{color:inherit}ul{margin:0;padding:0;list-style:none}
+.han{font-family:'Noto Sans KR',sans-serif;font-weight:900}
+.wrap{max-width:1200px;margin:0 auto;padding:0 max(5vw,20px)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:0 30px;border-radius:999px;font:700 17px/1 'Pretendard',sans-serif;letter-spacing:-.02em;text-decoration:none;border:0;cursor:pointer}
+.btn:focus-visible,input:focus-visible,.pill:focus-within,button:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.btn-w{background:#fff;color:#141414}.btn-r{background:var(--red);color:#fff}.btn-o{background:transparent;color:var(--ink);border:1px solid var(--sub)}
+.eyebrow{font-size:15px;font-weight:600;letter-spacing:-.01em;opacity:.8}
+.logo{display:inline-flex;align-items:center;gap:10px;font-size:23px;letter-spacing:-.02em}.seal{width:34px;height:34px;flex:none}
+/* hero */
+.hero{position:relative;min-height:min(860px,92vh);background:#1E3F33;color:#fff;display:flex;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:72% center}
+.hero .wrap{position:relative;flex:1;display:flex;flex-direction:column;justify-content:space-between;padding-top:26px;padding-bottom:72px;gap:48px;width:100%}
+nav{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+nav .links{display:flex;gap:28px;align-items:center;font-weight:500;font-size:15px}nav .links a{text-decoration:none}
+nav .links .btn{min-height:44px;padding:0 20px;font-size:15px;border:1px solid rgba(255,255,255,.8);color:#fff}
+.hero h1{font-size:clamp(52px,8.4vw,116px);line-height:1.02;letter-spacing:-.055em}
+.hero .copy{max-width:600px;display:flex;flex-direction:column;gap:26px}.hero .copy p{font-size:19px;line-height:1.65;opacity:.92}
+@media(max-width:600px){.hero{min-height:720px}.hero img{object-position:80% center;opacity:.5}nav .links a:not(.btn){display:none}}
+/* steps */
+.how{padding:clamp(80px,10vw,140px) 0}.how .wrap{display:flex;flex-wrap:wrap;gap:clamp(40px,7vw,96px)}
+.how h2{flex:1 1 360px;font-size:clamp(36px,4.6vw,54px)}
+.steps{flex:999 1 480px;display:grid}
+.step{border-top:1px solid var(--line);padding:26px 0 34px;display:grid;grid-template-columns:44px 1fr;gap:16px}
+.step b{color:var(--red);font-size:15px;font-weight:700}.step h3{font-size:25px;margin-bottom:8px}.step p{color:var(--sub)}
+/* elements */
+.els{background:#141414;color:#fff;padding:clamp(80px,9vw,120px) 0}
+.els .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:40px}
+.els h2{font-size:clamp(36px,4.6vw,54px)}.els .head p{color:#bbb}
+.grid5{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.el{border-radius:8px;padding:26px;min-height:400px;display:flex;flex-direction:column;justify-content:space-between}
+.el .han{font-size:112px;line-height:1}.el small{font-weight:600;font-size:14px;opacity:.8}.el div{display:grid;gap:6px;font-weight:700;font-size:17px;letter-spacing:-.02em}
+@media(max-width:600px){.el{min-height:220px}.el .han{font-size:72px}}
+/* preview */
+.preview{display:flex;flex-wrap:wrap;background:var(--red);color:#fff}
+.preview img{flex:1 1 380px;max-width:640px;width:100%;min-height:520px;object-fit:cover}
+.preview .txt{flex:999 1 420px;padding:clamp(40px,6vw,80px);display:flex;flex-direction:column;justify-content:center;gap:22px}
+.preview h2{font-size:clamp(40px,5.4vw,66px)}
+.big{font-weight:800;font-size:clamp(64px,8vw,96px);line-height:.9;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+/* form */
+.formband{padding:clamp(80px,9vw,120px) 0;background:var(--soft)}
+.formband .wrap{display:flex;flex-wrap:wrap;gap:clamp(32px,6vw,80px)}
+.formband h2{flex:1 1 320px;font-size:clamp(36px,4.6vw,54px)}
+form{flex:999 1 460px;max-width:620px;display:grid;gap:28px}
+.f{display:grid;gap:8px}.f>label,.f>.lab{font-weight:700;font-size:15px;letter-spacing:-.01em}.f .hint{font-size:14px;color:var(--sub);line-height:1.5}
+input[type=text]{height:56px;font:600 19px 'Pretendard',sans-serif;letter-spacing:-.02em;color:var(--ink);background:transparent;border:0;border-bottom:2px solid var(--line);padding:0 2px;border-radius:0;width:100%}
+input[type=file]{font:15px 'Pretendard',sans-serif;color:var(--sub)}
+.pills{display:flex;gap:8px;flex-wrap:wrap}.pill{position:relative}
+.pill input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.pill span{display:inline-flex;align-items:center;min-height:46px;padding:0 22px;border-radius:999px;border:1.5px solid var(--line);font-weight:600}
+.pill input:checked+span{background:var(--ink);color:var(--bg)}
+.err{color:var(--red);font-weight:700;font-size:15px;min-height:1em}
+/* result */
+#result[hidden]{display:none}
+.r-photo{height:clamp(360px,52vw,560px);position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.r-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.r-photo .han{font-size:clamp(220px,34vw,380px);line-height:1;opacity:.9}
+.r-head{padding:clamp(40px,5vw,72px) 0}
+.r-head .wrap{display:grid;gap:20px}
+.r-head h2{font-size:clamp(44px,6.4vw,80px);letter-spacing:-.055em}
+.r-head .line{font-size:clamp(20px,2.2vw,24px);font-weight:600;letter-spacing:-.03em}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chips span{border:1.5px solid currentColor;border-radius:999px;padding:6px 16px;font-weight:600;font-size:15px}
+.pil{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.pil div{border:1px solid currentColor;border-radius:6px;padding:12px 24px;display:grid;justify-items:center;gap:2px}
+.pil div small{font-size:12px;font-weight:700}.pil div span{font-size:28px}
+.pil .on{background:#fff;color:#141414;border-color:#fff}.pil .on small{color:var(--red)}
+.note{font-size:14px;opacity:.85;line-height:1.5}
+.report{padding:clamp(56px,7vw,96px) 0}
+.report .wrap{display:grid;gap:clamp(48px,6vw,72px)}
+.sec{display:grid;grid-template-columns:minmax(0,280px) minmax(0,1fr);gap:clamp(20px,4vw,56px);border-top:2px solid var(--line);padding-top:28px}
+.sec>h3{font-size:clamp(26px,3vw,34px)}
+.sec .body{display:grid;gap:18px;font-size:18px;line-height:1.8;max-width:720px}
+@media(max-width:760px){.sec{grid-template-columns:1fr}}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:12px}
+.box{background:var(--soft);border-radius:10px;padding:24px;display:grid;gap:12px;align-content:start}
+.box h4{margin:0;font-size:17px;font-weight:700;letter-spacing:-.02em}
+.box li{position:relative;padding-left:18px;font-size:16px;line-height:1.6}.box li+li{margin-top:8px}
+.box li::before{content:'';position:absolute;left:2px;top:.62em;width:7px;height:7px;border-radius:50%;background:var(--dot,var(--ink))}
+.bar{display:grid;grid-template-columns:56px 1fr 20px;gap:12px;align-items:center;font-weight:700;font-size:15px}
+.bar i{display:block;height:12px;border-radius:6px;background:var(--soft);overflow:hidden}.bar i b{display:block;height:100%;border-radius:6px}
+.bar em{font-style:normal;color:var(--sub);text-align:right}
+.compat{background:#141414;color:#fff;padding:clamp(56px,7vw,96px) 0}
+.compat .wrap{display:grid;gap:36px}
+.ctop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:20px;border-bottom:1px solid #333;padding-bottom:28px}
+.ctop h3{font-size:clamp(34px,4.4vw,52px)}.ctop small{color:#bbb;font-size:15px}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,4vw,56px)}
+.cgrid p{color:#e6e6e6;font-size:18px;line-height:1.8}
+.rs{display:grid;grid-template-columns:48px 1fr;gap:14px;align-items:start}.rs+.rs{margin-top:18px}
+.rs b{background:var(--red);border-radius:5px;text-align:center;font-size:13px;padding:4px 0;font-weight:700}.rs b.m{background:#4a4a4a}
+.rs strong{display:block;font-size:16px;font-weight:700;letter-spacing:-.02em}.rs span{display:block;color:#bdbdbd;font-size:15px;line-height:1.65;margin-top:2px}
+.compat .box{background:#1f1f1f}.compat .box li{color:#e6e6e6}
+.share{padding:clamp(56px,7vw,96px) 0}
+.share .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:clamp(28px,4vw,56px);align-items:center}
+.share canvas,.share img{width:100%;max-width:440px;height:auto;border-radius:8px;display:block}
+.fb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.fb button{min-height:46px;padding:0 20px;border-radius:999px;border:1px solid var(--sub);background:transparent;color:var(--ink);font:600 15px 'Pretendard',sans-serif;cursor:pointer}
+.shop{padding:0 0 clamp(64px,8vw,104px)}
+.goods{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.good{background:var(--soft);border-radius:10px;padding:24px;display:grid;gap:8px;text-decoration:none}
+.good b{font-size:19px;letter-spacing:-.03em}.good span{color:var(--sub);font-size:15px}.good u{text-decoration:none;font-weight:700;color:var(--red);font-size:14px}
+.ad{font-size:13px;color:var(--sub);margin:0 0 16px}
+.more{padding:clamp(56px,7vw,96px) 0}.more .wrap{display:grid;gap:clamp(48px,6vw,72px)}
+.rows{display:grid;gap:12px}.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 46px;gap:12px;align-items:end}
+.row input{height:50px;font-size:17px}.row button.x{height:46px;width:46px;border-radius:50%;border:1px solid var(--sub);background:transparent;color:var(--ink);font-size:20px;cursor:pointer}
+@media(max-width:520px){.row{grid-template-columns:1fr 46px}.row input:first-child{grid-column:1/3}}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}.btn-s{min-height:46px;padding:0 20px;font-size:15px}
+.rank{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:16px;align-items:center;border-top:1px solid var(--soft);padding:16px 0}
+.rank .n{font-size:30px;font-weight:800;letter-spacing:-.05em;color:var(--sub)}.rank.top .n{color:var(--red)}
+.rank strong{display:block;font-size:19px;letter-spacing:-.03em}.rank span{display:block;color:var(--sub);font-size:15px;line-height:1.5}
+.rank .sc{font-size:34px;font-weight:800;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.headline{font-size:clamp(22px,2.6vw,28px);font-weight:800;letter-spacing:-.04em;line-height:1.3}
+.nick{display:flex;gap:8px;flex-wrap:wrap}.nick span{background:var(--soft);border-radius:999px;padding:8px 16px;font-weight:600}
+.stat{display:flex;flex-wrap:wrap;gap:12px}.stat div{background:var(--soft);border-radius:10px;padding:20px 22px;display:grid;gap:2px;flex:1 1 200px}
+.stat small{color:var(--sub);font-size:14px}.stat b{font-size:26px;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.anv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;align-items:start}.anv canvas,.anv img{width:100%;max-width:360px;border-radius:8px;display:block}
+.sws{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sw{display:grid;gap:8px}.sw i{display:block;aspect-ratio:1;border-radius:10px;border:1px solid rgba(128,128,128,.25)}.sw b{font-size:14px;font-weight:700}.sw small{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
+.use{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
+footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
+@media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
+</style>
+</head>
+<body>
+<section class="hero">
+<img src="dog.jpg" alt="녹색 배경지 앞에 앉아 있는 강아지">
+<div class="wrap">
+<nav><span class="logo"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="han">발도장</span></span><div class="links"><a href="#types">열 가지 성향</a><a href="#saju">궁합 보기</a><a class="btn" href="#saju">시작하기</a></div></nav>
+<div class="copy">
+<h1>생일 몰라도<br>괜찮아요.</h1>
+<p>우리 가족이 된 날이 이 아이의 사주가 됩니다.<br>입양일 하나로 성향부터 나와의 궁합까지.</p>
+<a class="btn btn-w" href="#saju" style="align-self:flex-start">입양일로 사주 보기 →</a>
+</div>
+</div>
+</section>
+
+<section class="how"><div class="wrap">
+<h2>가족이 된 날이<br>이 아이의<br>사주가 됩니다.</h2>
+<div class="steps">
+<div class="step"><b>01</b><div><h3>입양일만 알려주세요</h3><p>생일은 몰라도 돼요. 처음 만난 날, 이름 지어준 날처럼 기억하고 싶은 날을 골라도 괜찮아요.</p></div></div>
+<div class="step"><b>02</b><div><h3>만세력으로 계산해요</h3><p>절기를 기준으로 연·월·일 세 기둥을 뽑아요. 생일을 알면 타고난 기질도 함께 보여드려요.</p></div></div>
+<div class="step"><b>03</b><div><h3>성향 리포트와 궁합</h3><p>좋아하는 것, 예민한 것, 보호자 사용설명서까지. 나와의 궁합은 공유 카드로 받아보세요.</p></div></div>
+</div>
+</div></section>
+
+<section class="els" id="types"><div class="wrap">
+<div class="head"><h2>다섯 가지 기운,<br>열 가지 성향.</h2><p>가족이 된 날의 일간(日干)으로 정해져요</p></div>
+<div class="grid5" id="elgrid"></div>
+</div></section>
+
+<section class="preview">
+<img src="cat.jpg" alt="빨간 배경지 앞에 앉아 있는 고양이">
+<div class="txt">
+<span class="eyebrow">예시 · 2023. 5. 3. 가족이 된 나비</span>
+<h2>나비는<br>반짝이는 보석.</h2>
+<p style="max-width:520px;font-size:18px">잘 다듬은 보석처럼 섬세하고 깔끔한 아이. 자기만의 규칙이 분명하고, 한번 믿은 사람에게는 끝까지 마음을 내줘요.</p>
+<div style="display:flex;align-items:flex-end;gap:18px"><span class="big">75</span><span style="font-weight:700;font-size:20px;letter-spacing:-.03em;line-height:1.35">보호자와의 궁합<br>보살핌형</span></div>
+</div>
+</section>
+
+<section class="formband" id="saju"><div class="wrap">
+<h2>우리 아이를<br>소개해 주세요.</h2>
+<form id="f" novalidate>
+<div class="f"><label for="name">이름</label><input type="text" id="name" maxlength="12" autocomplete="off" placeholder="예: 나비"></div>
+<div class="f"><span class="lab">종류</span><div class="pills" role="radiogroup" aria-label="종류">
+<label class="pill"><input type="radio" name="kind" value="dog" checked><span>강아지</span></label>
+<label class="pill"><input type="radio" name="kind" value="cat"><span>고양이</span></label></div></div>
+<div class="f"><label for="adopt">우리 가족이 된 날</label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><span class="hint">숫자만 쭉 입력하면 돼요 (예: 20230503). 정확히 모르면 처음 만난 날, 이름 지어준 날처럼 기념하고 싶은 날을 넣어 주세요.</span></div>
+<div class="f"><label for="birth">혹시 생일도 아시나요? <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><span class="hint">알면 '타고난 기질'을 따로 보여드려요.</span></div>
+<div class="f"><label for="photo">아이 사진 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="file" id="photo" accept="image/*"><span class="hint">사진은 이 화면 안에서만 쓰이고 어디에도 올라가지 않아요.</span></div>
+<div class="f"><label for="owner">보호자 생년월일 (양력)</label><input type="text" id="owner" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="1990.03.15"><span class="hint">음력 생일이라면 양력으로 바꿔 넣어 주세요.</span></div>
+<p class="err" id="err" role="alert"></p>
+<button class="btn btn-r" type="submit">사주 보기</button>
+</form>
+</div></section>
+
+<div id="result" hidden aria-live="polite">
+<div class="r-photo" id="rphoto"></div>
+<section class="r-head" id="rhead"><div class="wrap">
+<span class="eyebrow" id="rdate"></span>
+<h2 id="rtitle"></h2>
+<p class="line" id="rline"></p>
+<div class="chips" id="rchips"></div>
+<div class="pil" id="rpil"></div>
+<p class="note" id="rnote"></p>
+</div></section>
+
+<section class="report"><div class="wrap">
+<div class="sec"><h3>이런 아이예요</h3><div class="body" id="rabout"></div></div>
+<div class="sec"><h3>알아두면 좋아요</h3><div class="three" id="rlists"></div></div>
+<div class="sec"><h3>다섯 기운</h3><div class="body"><div id="rbars" style="display:grid;gap:12px;max-width:520px"></div><div id="relx" style="display:grid;gap:12px"></div></div></div>
+<div class="sec"><h3>가족이 된 계절</h3><div class="body" id="rseason"></div></div>
+<div class="sec" id="rbirthsec" hidden><h3>태어난 날로 보면</h3><div class="body" id="rbirth"></div></div>
+</div></section>
+
+<section class="compat"><div class="wrap">
+<div class="ctop"><div style="display:grid;gap:8px"><small id="cwho"></small><h3 id="ctype"></h3></div><span class="big" id="cscore"></span></div>
+<div class="cgrid">
+<div style="display:grid;gap:28px"><p id="cdesc"></p><div class="box"><h4>함께 잘 지내는 법</h4><ul id="ctips" style="--dot:var(--red)"></ul></div></div>
+<div><div id="creasons"></div><p class="note" id="cfoot" style="color:#9a9a9a;margin-top:24px;font-size:14px"></p></div>
+</div>
+</div></section>
+
+<section class="more" id="more"><div class="wrap">
+<div class="sec"><h3>발도장<br>퍼스널 컬러</h3><div class="body" id="pcbody" style="max-width:820px"></div></div>
+<div class="sec"><h3 id="ytitle">올해의 운세</h3><div class="body" id="ybody"></div></div>
+<div class="sec"><h3>함께한 시간</h3><div class="anv"><div style="display:grid;gap:18px"><div class="stat" id="astat"></div><p class="note" style="color:var(--sub)">가족이 된 날을 1일째로 세요.</p><div class="acts"><button class="btn btn-r btn-s" type="button" id="save2">기념일 카드 저장</button></div><p class="note" id="savemsg2"></p></div><canvas id="cv2" width="1080" height="1350" aria-label="입양 기념일 카드 미리보기"></canvas></div></div>
+<div class="sec"><h3>가족 궁합 랭킹</h3><div class="body" style="max-width:760px">
+<p>우리 집에서 누가 제일 잘 맞을까요? 가족 이름과 생년월일(양력)을 넣어 주세요. 보호자(나)는 자동으로 들어가요.</p>
+<div class="rows" id="famrows"></div>
+<div class="acts"><button class="btn btn-o btn-s" type="button" id="famadd">+ 가족 추가</button><button class="btn btn-r btn-s" type="button" id="famgo">랭킹 보기</button></div>
+<p class="err" id="famerr" role="alert"></p><div id="famres"></div></div></div>
+<div class="sec"><h3>우리 집 멍냥이들 궁합</h3><div class="body" style="max-width:760px">
+<p>같이 사는 아이가 있나요? 이름과 가족이 된 날을 넣으면 아이들끼리의 궁합을 봐 드려요.</p>
+<div class="rows" id="sibrows"></div>
+<div class="acts"><button class="btn btn-o btn-s" type="button" id="sibadd">+ 아이 추가</button><button class="btn btn-r btn-s" type="button" id="sibgo">궁합 보기</button></div>
+<p class="err" id="siberr" role="alert"></p><div id="sibres"></div></div></div>
+<div class="sec"><h3>기운을 채우는 별명</h3><div class="body" id="nickbody"></div></div>
+</div></section>
+
+<section class="share"><div class="wrap">
+<canvas id="cv" width="1080" height="1350" aria-label="공유 카드 미리보기"></canvas>
+<div style="display:grid;gap:22px">
+<h3 style="font-size:clamp(30px,3.6vw,42px)">발도장 쾅,<br>공유 카드가 나왔어요.</h3>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-r" type="button" id="save">공유 카드 저장</button><a class="btn btn-o" href="#saju">다른 아이도 보기</a></div>
+<p class="note" id="savemsg"></p>
+<div style="display:grid;gap:10px;margin-top:8px"><b style="font-size:17px">이 결과, 우리 아이랑 맞나요?</b><div class="fb"><button type="button" data-fb="1">맞아요</button><button type="button" data-fb="0">글쎄요</button></div><p class="note" id="fbmsg"></p></div>
+</div>
+</div></section>
+
+<section class="shop"><div class="wrap">
+<div class="sec"><h3 id="shoptitle"></h3><div>
+<p class="ad">아래 링크는 상품 검색으로 연결돼요. 제휴 링크로 바꾸면 이 자리에 '구매 시 운영자가 수수료를 받는다'는 문구를 꼭 표시해야 해요.</p>
+<div class="goods" id="goods"></div></div></div>
+</div></section>
+</div>
+
+<footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="han">발도장</span></span><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 입력한 날짜와 사진은 이 화면 안에서만 계산되고 저장·전송되지 않아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
+
+<script>
+const SAJU = (() => {
+const STEMS = '甲乙丙丁戊己庚辛壬癸', BRS = '子丑寅卯辰巳午未申酉戌亥';
+const STEM_KO = '갑을병정무기경신임계', BR_KO = '자축인묘진사오미신유술해';
+const STEM_EL = [0,0,1,1,2,2,3,3,4,4];
+const BR_EL = [4,2,0,0,2,1,1,2,3,3,2,4];
+const EL_KO = ['목','화','토','금','수'], EL_HAN = ['木','火','土','金','水'];
+const rad = Math.PI / 180;
+function sunLon(jd) {
+  const T = (jd - 2451545) / 36525;
+  const L0 = 280.46646 + 36000.76983 * T + 0.0003032 * T * T;
+  const M = (357.52911 + 35999.05029 * T - 0.0001537 * T * T) * rad;
+  const C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * Math.sin(M) + (0.019993 - 0.000101 * T) * Math.sin(2 * M) + 0.000289 * Math.sin(3 * M);
+  const om = (125.04 - 1934.136 * T) * rad;
+  return (((L0 + C - 0.00569 - 0.00478 * Math.sin(om)) % 360) + 360) % 360;
+}
+const jdKST = (y, m, d, h) => Date.UTC(y, m - 1, d, h - 9) / 86400000 + 2440587.5;
+const monthIdx = l => Math.floor((((l - 315) % 360) + 360) % 360 / 30);
+const mod = (a, n) => ((a % n) + n) % n;
+const jo = (w, a, b) => { const c = String(w).charCodeAt(String(w).length - 1); return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? a : b; };
+const E = e => `${EL_KO[e]}(${EL_HAN[e]})`;
+const EJ = (e, a, b) => E(e) + jo(EL_KO[e], a, b);
+function chart(y, m, d) {
+  const a = monthIdx(sunLon(jdKST(y, m, d, 0))), b = monthIdx(sunLon(jdKST(y, m, d, 24)));
+  const mi = monthIdx(sunLon(jdKST(y, m, d, 12)));
+  const sy = (m <= 2 && mi >= 10) ? y - 1 : y;
+  const ys = mod(sy - 4, 10), yb = mod(sy - 4, 12);
+  const ms = mod((ys % 5) * 2 + 2 + mi, 10), mb = mod(mi + 2, 12);
+  const jdn = Date.UTC(y, m - 1, d) / 86400000 + 2440588;
+  const di = mod(jdn + 49, 60);
+  const pillars = [[ys, yb], [ms, mb], [di % 10, di % 12]];
+  const counts = [0,0,0,0,0];
+  for (const [s, br] of pillars) { counts[STEM_EL[s]]++; counts[BR_EL[br]]++; }
+  return { pillars, counts, boundary: a !== b, dayStem: di % 10, dayBr: di % 12 };
+}
+const han = p => STEMS[p[0]] + BRS[p[1]];
+const ko = p => STEM_KO[p[0]] + BR_KO[p[1]];
+function compat(pet, owner, L) {
+  const o = (L && L.o) || '보호자', pp = (L && L.p) || '아이';
+  const ps = pet.dayStem, os = owner.dayStem, pb = pet.dayBr, ob = owner.dayBr;
+  const ep = STEM_EL[ps], eo = STEM_EL[os];
+  let A, type, reasons = [];
+  if (Math.abs(ps - os) === 5) { A = 20; type = 'hap'; reasons.push([20, `${STEMS[os]}${STEMS[ps]} 천간합 — 서로를 끌어당기는 합(合)의 인연`]); }
+  else if ((eo + 1) % 5 === ep) { A = 15; type = 'care'; reasons.push([15, `${o}의 ${EJ(eo,'이','가')} ${pp}의 ${EJ(ep,'을','를')} 키워주는 ${EL_KO[eo]}생${EL_KO[ep]} 관계`]); }
+  else if ((ep + 1) % 5 === eo) { A = 15; type = 'heal'; reasons.push([15, `${pp}의 ${EJ(ep,'이','가')} ${o}의 ${EJ(eo,'을','를')} 북돋는 ${EL_KO[ep]}생${EL_KO[eo]} 관계`]); }
+  else if (ep === eo) { A = 10; type = 'twin'; reasons.push([10, `둘 다 ${E(ep)} 기운 — 말 안 해도 통하는 사이`]); }
+  else { A = 5; type = 'spark'; reasons.push([5, `${EJ(ep,'과','와')} ${EJ(eo,'이','가')} 서로 견제하는 관계 — 그래서 더 재밌는 사이`]); }
+  let B = 0;
+  const pair = BRS[ob] + BRS[pb];
+  if (mod(pb + ob, 12) === 1) { B = 10; reasons.push([10, `${pair} 육합 — 생활 리듬이 찰떡이에요`]); }
+  else if (pb !== ob && pb % 4 === ob % 4) { B = 7; reasons.push([7, `${pair} 반합 — 같은 방향을 바라봐요`]); }
+  else if (Math.abs(pb - ob) === 6) { B = -5; reasons.push([-5, `${pair} 충 — 리듬이 달라 가끔 티격태격해요`]); }
+  let C = 0;
+  for (let e = 0; e < 5; e++) if (owner.counts[e] === 0 && pet.counts[e] > 0 && C < 10) { C += 5; reasons.push([5, `${o}에게 없는 ${E(e)} 기운을 ${pp}${jo(pp,'이','가')} 채워줘요`]); }
+  const score = Math.max(60, Math.min(99, 60 + A + B + C));
+  return { score, type, A, B, C, reasons };
+}
+return { chart, compat, han, ko, jo, STEMS, BRS, STEM_EL, BR_EL, EL_KO, EL_HAN };
+})();
+if (typeof module !== 'undefined') module.exports = SAJU;
+
+{
+const EL = [
+ {ko:'목',han:'木',bg:'#24453A',fg:'#FFFFFF',bar:'#24453A'},{ko:'화',han:'火',bg:'#C42A1E',fg:'#FFFFFF',bar:'#C42A1E'},
+ {ko:'토',han:'土',bg:'#D6A12F',fg:'#111111',bar:'#D6A12F'},{ko:'금',han:'金',bg:'#ECE8E1',fg:'#111111',bar:'#8C867C'},{ko:'수',han:'水',bg:'#2A3B52',fg:'#FFFFFF',bar:'#2A3B52'}];
+const TYPES = [
+{name:'듬직한 큰나무',keys:['의젓함','리더십','고집'],line:'곧고 의젓한 우리 집 기둥',
+ about:['하늘로 곧게 뻗는 큰나무처럼 의젓하고 당당한 아이예요. 산책길에서도 앞장서 걷고 싶어 하고, 집 안에서도 자기가 지켜야 할 자리가 있다고 믿어요.','한번 마음먹은 건 쉽게 굽히지 않는 고집도 있어요. 하지만 그 고집 밑에는 가족을 지키겠다는 듬직한 책임감이 깔려 있어요.'],
+ likes:['매일 같은 시간의 산책','넓고 탁 트인 공간','문 앞 지키기처럼 맡은 역할'],
+ careful:['억지로 끌려가는 것','자기 자리를 뺏기는 것','무시당한다고 느낄 때'],
+ tips:['고집을 꺾기보다 "이쪽? 저쪽?" 선택지를 주세요','잘한 일은 크게, 확실하게 인정해 주세요','리드줄은 당기기보다 멈춰서 기다려 주세요']},
+{name:'살랑이는 풀꽃',keys:['유연함','붙임성','끈기'],line:'누구에게나 곁을 내주는 사랑둥이',
+ about:['바람 따라 살랑이는 풀꽃처럼 유연하고 사랑스러운 아이예요. 낯선 사람에게도 금방 곁을 내주고, 새 환경에도 생각보다 빨리 적응해요.','부드러워 보여도 속은 끈질긴 편이에요. 원하는 게 있으면 포기하지 않고 은근히, 끝까지 졸라요.'],
+ likes:['보호자 옆에 딱 붙어 있기','여러 사람이 모이는 자리','새로운 간식 탐험'],
+ careful:['혼자 오래 남겨질 때','큰 소리로 혼날 때','관심이 갑자기 끊길 때'],
+ tips:['외출 전후 인사는 짧고 다정하게','혼낼 땐 큰 목소리보다 일관된 행동으로','졸라도 규칙은 흔들리지 않게']},
+{name:'온 집안의 햇살',keys:['밝음','열정','표현력'],line:'있는 것만으로 집이 환해지는 아이',
+ about:['한낮의 태양처럼 에너지가 넘치는 아이예요. 반가움도 서운함도 숨김없이 온몸으로 표현해서 집안 분위기를 단번에 밝혀요.','관심받는 걸 정말 좋아해요. 손님이 오면 제일 먼저 달려 나가는 무대 체질이지만, 그만큼 금방 지치기도 해요.'],
+ likes:['신나게 뛰어노는 시간','사람들의 환호와 박수','햇볕 드는 창가'],
+ careful:['에너지를 쓸 곳이 없을 때','관심 밖으로 밀려날 때','덥고 답답한 공간'],
+ tips:['하루 한 번은 에너지를 다 쓰는 놀이를','흥분했을 땐 차분해질 때까지 기다렸다가 칭찬','여름엔 시원한 쉼터를 꼭 마련해 주세요']},
+{name:'따뜻한 등불',keys:['다정함','섬세함','집중력'],line:'내 기분을 제일 먼저 알아채는 아이',
+ about:['어둠 속 등불처럼 은은하고 따뜻한 아이예요. 요란하진 않지만, 보호자 기분이 가라앉은 날이면 슬며시 다가와 곁을 지켜요.','한번 꽂힌 것엔 놀라운 집중력을 보여요. 좋아하는 장난감, 좋아하는 사람에게 마음을 깊게 쏟는 타입이에요.'],
+ likes:['보호자 무릎이나 이불 속','조용한 1:1 놀이','익숙한 냄새가 나는 물건'],
+ careful:['시끄럽고 정신없는 환경','낯선 사람이 갑자기 다가올 때','마음 준 사람과 떨어질 때'],
+ tips:['새 사람은 천천히, 냄새부터 맡게 해 주세요','짧더라도 매일 둘만의 시간을','보호자 체취가 밴 담요를 쉼터에 넣어 주세요']},
+{name:'든든한 큰산',keys:['느긋함','포용력','뚝심'],line:'함께 있으면 마음이 놓이는 아이',
+ about:['높은 산처럼 묵직하고 느긋한 아이예요. 천둥이 쳐도, 손님이 와도 웬만해선 흔들리지 않아 함께 있으면 마음이 편해져요.','넓은 품으로 다른 동물이나 아이들도 잘 받아주지만, 한번 "싫다"고 정하면 산처럼 꿈쩍도 안 하는 뚝심이 있어요.'],
+ likes:['늘 같은 자리, 같은 방석','느긋한 낮잠','천천히 냄새 맡는 산책'],
+ careful:['갑작스러운 이사나 환경 변화','서두르라고 재촉받을 때','쉬는데 계속 건드릴 때'],
+ tips:['변화는 조금씩, 익숙한 물건과 함께','산책은 속도보다 시간을 넉넉히','버틸 땐 끌기보다 기다리는 쪽이 빨라요']},
+{name:'포근한 정원',keys:['온순함','세심함','실속'],line:'모두를 품어주는 집안의 살림꾼',
+ about:['잘 가꾼 정원의 흙처럼 포근하고 온순한 아이예요. 누구든 너그럽게 받아주고, 집안의 다른 식구들까지 살뜰히 챙겨요.','의외로 실속파예요. 간식 숨겨둔 곳, 보호자가 잘 열어주는 문을 정확히 기억하고 조용히 원하는 걸 얻어내요.'],
+ likes:['가족이 다 모인 거실','숨겨진 간식 찾기','부드러운 담요와 쿠션'],
+ careful:['가족끼리 언성이 높아질 때','자기 몫이 줄었다고 느낄 때','너무 오래 혼자 있을 때'],
+ tips:['노즈워크로 똑똑함을 채워 주세요','새 식구가 오면 원래 있던 아이부터 챙겨 주세요','조용히 참는 편이라 작은 변화도 살펴봐 주세요']},
+{name:'용감한 바위',keys:['씩씩함','의리','단호함'],line:'한번 내 편이면 끝까지 의리파',
+ about:['단단한 바위처럼 씩씩하고 용감한 아이예요. 낯선 소리에도 먼저 나서서 확인하고, 가족을 지키는 일엔 물러서지 않아요.','좋고 싫은 게 아주 분명해요. 싫은 건 확실히 거절하지만, 한번 내 사람이라 인정하면 끝까지 의리를 지켜요.'],
+ likes:['힘껏 당기고 뛰는 놀이','새로운 길 탐험','확실한 규칙과 보상'],
+ careful:['어제는 되고 오늘은 안 되는 애매한 규칙','억지로 안기거나 붙잡힐 때','지루한 하루'],
+ tips:['규칙은 가족 모두 똑같이 지켜 주세요','싫다는 신호(으르렁, 꼬리 탁탁)를 존중해 주세요','힘을 쓸 수 있는 터그 놀이를 자주']},
+{name:'반짝이는 보석',keys:['섬세함','깔끔함','자존심'],line:'깔끔하고 섬세한, 나에게만 애교쟁이',
+ about:['잘 다듬은 보석처럼 섬세하고 깔끔한 아이예요. 밥그릇 위치, 산책 코스, 잠자리 방향까지 자기만의 규칙이 분명하고 조금만 달라져도 금방 알아채요.','자존심이 있어 쉽게 곁을 주진 않지만, 한번 믿은 사람에게는 끝까지 마음을 내줘요. 그 사람에게만 보여주는 애교가 따로 있어요.'],
+ likes:['깨끗하게 정돈된 잠자리','빗질과 그루밍 시간','정해진 시간의 밥과 산책'],
+ careful:['지저분하거나 냄새나는 공간','놀림받거나 체면 구길 때','루틴이 갑자기 깨질 때'],
+ tips:['화장실과 잠자리는 늘 청결하게','실수했을 땐 웃지 말고 모른 척해 주세요','바뀌는 일정은 미리 조금씩 알려 주세요']},
+{name:'넉넉한 바다',keys:['자유로움','호기심','눈치'],line:'세상이 궁금한 꼬마 탐험가',
+ about:['넓은 바다처럼 자유롭고 호기심이 넘치는 아이예요. 산책이 곧 모험이라, 처음 가는 길과 처음 맡는 냄새에 눈이 반짝여요.','눈치가 빠르고 머리도 좋아요. 다만 갇혀 있는 걸 싫어해서, 심심하면 스스로 놀거리를 만들어 집 안을 탐험하기도 해요.'],
+ likes:['새로운 산책 코스','머리 쓰는 퍼즐 장난감','넓은 곳에서의 자유 시간'],
+ careful:['좁은 공간에 오래 있을 때','매일 똑같은 지루한 일상','하고 싶은 걸 막기만 할 때'],
+ tips:['가끔은 산책 코스를 바꿔 주세요','노즈워크와 퍼즐로 머리를 쓰게','호기심이 큰 만큼 문단속과 인식표는 꼭']},
+{name:'촉촉한 빗방울',keys:['관찰력','감수성','직감'],line:'천천히, 그러나 깊게 마음을 여는 아이',
+ about:['조용히 내리는 빗방울처럼 차분하고 감수성이 풍부한 아이예요. 먼저 다가가기보다 한 발 떨어져 지켜보다가, 안전하다 싶을 때 슬며시 다가와요.','직감이 좋아서 보호자가 나갈 준비를 하는지, 기분이 어떤지 말하지 않아도 알아요. 천천히 마음을 열지만 한번 열면 누구보다 깊어요.'],
+ likes:['몸을 숨길 수 있는 아늑한 공간','창밖 구경','조용한 오후의 낮잠'],
+ careful:['큰 소리, 사람이 많은 자리','억지로 안기거나 끌려 나올 때','갑작스러운 환경 변화'],
+ tips:['숨숨집 같은 "나만의 동굴"을 마련해 주세요','먼저 다가올 때까지 기다려 주세요','칭찬은 작고 부드러운 목소리로']}];
+const STRONG = ['호기심과 뻗어 나가려는 힘이 커요. 새 장난감, 새 산책길을 반겨요.','표현이 풍부하고 흥이 많아요. 반가움을 온몸으로 드러내요.','안정감을 중요하게 여겨요. 익숙한 자리와 루틴이 마음을 지켜줘요.','기준이 분명하고 깔끔해요. 싫은 건 확실히 거절해요.','눈치가 빠르고 생각이 깊어요. 행동하기 전에 상황을 먼저 살펴요.'];
+const MISSING = ['새로운 시도를 조금 낯설어할 수 있어요. 새 물건은 천천히 소개해 주세요.','흥이 오르기까지 시간이 걸려요. 칭찬은 크고 분명하게 해 주세요.','환경 변화에 흔들리기 쉬워요. 밥과 산책 시간을 일정하게 지켜 주세요.','규칙을 익히는 데 시간이 걸려요. 짧고 일관된 신호가 효과적이에요.','쉬는 시간이 부족해지기 쉬워요. 조용히 쉴 곳을 따로 만들어 주세요.'];
+const SEASON = [
+ ['겨울','추운 계절에 가족이 됐어요. 따뜻한 집과 품의 고마움을 누구보다 잘 아는 아이예요.'],
+ ['봄','봄에 가족이 됐어요. 새싹처럼 우리 집에 뿌리내리며 하루하루 자라는 아이예요.'],
+ ['여름','여름에 가족이 됐어요. 뜨거운 계절의 기운처럼 함께하는 날들이 쨍하고 선명한 아이예요.'],
+ ['가을','가을에 가족이 됐어요. 결실의 계절처럼, 함께한 시간이 차곡차곡 쌓일수록 깊어지는 아이예요.']];
+const seasonOf = br => [0,0,1,1,1,2,2,2,3,3,3,0][br];
+const CT = {
+ hap:{name:'운명형',desc:'보호자와 아이의 일간이 천간합(合)을 이뤄요. 서로 다른 기운이 만나 하나로 묶이는 관계라, 처음부터 알아본 것처럼 끌리는 인연이에요.',tips:['산책, 잠들기 전 시간처럼 둘만의 루틴을 만들면 유대가 더 단단해져요','닮아가는 만큼, 아이 혼자만의 시간도 존중해 주세요']},
+ care:{name:'보살핌형',desc:'보호자의 기운이 아이의 기운을 낳고 키워주는 상생(相生) 관계예요. 보호자가 주는 관심과 돌봄이 아이에게 그대로 힘이 되어, 함께 지낼수록 아이가 안정되고 밝아져요.',tips:['아이가 기댈 수 있는 일정한 하루 루틴을 지켜 주세요','다 해주기보다 혼자 노는 시간도 조금씩 만들어 주세요','칭찬과 스킨십이 가장 큰 보약이에요']},
+ heal:{name:'힐링형',desc:'아이의 기운이 보호자의 기운을 낳고 북돋는 상생(相生) 관계예요. 지친 하루 끝에 얼굴만 봐도 힘이 나는 사이. 보호자가 받는 위로가 큰 만큼 아이도 그 마음을 알아요.',tips:['받은 만큼 돌려주기, 아이가 좋아하는 놀이 시간을 꼭 챙겨 주세요','보호자가 힘든 날엔 아이도 같이 가라앉을 수 있어요. 함께 산책하며 기분을 바꿔 보세요']},
+ twin:{name:'닮은꼴형',desc:'두 일간이 같은 오행이에요. 성향이 닮아서 말 안 해도 통하는 편안한 사이예요. 좋아하는 것도 싫어하는 것도 비슷해 함께하는 일상이 자연스러워요.',tips:['닮은 만큼 고집이 부딪힐 수 있어요. 한 발 양보는 보호자 몫','같은 기운에 치우치기 쉬우니 새로운 놀이로 다른 기운도 채워 주세요']},
+ spark:{name:'밀당형',desc:'두 일간이 서로를 견제하는 상극(相剋) 관계예요. 기운이 달라 가끔 엇박자가 나지만, 그 차이 덕분에 서로를 단련시키고 지루할 틈이 없는 사이예요. 상극은 나쁜 게 아니라 자극이에요.',tips:['아이의 "싫어요" 신호를 빨리 읽어 주세요','훈련은 짧고 즐겁게, 게임처럼','엇박자가 날 땐 잠깐 거리를 두는 게 특효예요']}};
+const BREL = {10:'일지(생활의 자리)끼리 육합을 이뤄 생활 리듬이 잘 맞아요. 잠드는 시간, 산책 타이밍이 자연스럽게 맞춰져요.',7:'일지가 같은 삼합 묶음에 속해 같은 방향을 바라봐요. 함께하는 목표가 생기면 더 똘똘 뭉쳐요.','-5':'일지가 서로 마주 보는 충(沖) 관계예요. 생활 패턴이 엇갈리기 쉬워 가끔 티격태격하지만, 미리 알면 충분히 맞춰 갈 수 있어요.',0:'일지 사이에 특별한 합이나 충은 없어요. 무난하고 편안한 일상을 함께해요.'};
+const GOODS = [
+ [['노즈워크 장난감','호기심을 키워주는 탐색 놀이'],['산책 리드줄','뻗어 나가는 기운엔 바깥 공기'],['원목 장난감','나무 기운과 결이 맞는 장난감']],
+ [['공 장난감','넘치는 에너지를 쏟을 곳'],['터그 장난감','같이 놀아주는 시간이 최고의 선물'],['낚싯대 장난감','쫓고 뛰는 놀이로 열기 발산']],
+ [['마약방석','묵직한 아이에게 어울리는 포근한 자리'],['쿠션 하우스','나만의 안정적인 공간'],['도넛 방석','느긋하게 몸을 말고 쉬는 곳']],
+ [['그루밍 브러시','깔끔쟁이를 위한 털 정리'],['자동 급식기','규칙적인 하루를 좋아하는 아이에게'],['장난감 정리함','제자리에 있어야 마음이 편한 타입']],
+ [['자동 급수기','물 기운 아이에게 늘 신선한 물'],['숨숨집','조용히 관찰할 수 있는 아지트'],['창문 해먹','바깥 구경이 취미인 관찰자']]];
+const YEAR = {
+ same:{key:'친구운',desc:'올해의 기운이 아이와 같은 오행이에요. 비슷한 기운이 모이는 해라 새 친구(사람·동물)를 만날 일이 많아요.',lines:[['산책·놀이','동네 친구가 늘어나는 해. 새로운 산책 메이트를 만들어 보세요.'],['쉼·컨디션','에너지가 한쪽으로 쏠리기 쉬워요. 노는 날과 쉬는 날을 나눠 주세요.'],['관계','고집이 비슷한 친구와는 부딪힐 수도 있어요. 첫 만남은 천천히.']]},
+ help:{key:'도움운',desc:'올해의 기운이 아이의 기운을 낳아 북돋아요. 컨디션과 기분이 좋은 편안한 한 해예요.',lines:[['산책·놀이','새로운 놀이를 가르치기 좋은 해. 배우는 속도가 빨라요.'],['쉼·컨디션','몸도 마음도 안정적인 흐름. 지금의 루틴을 잘 지켜 주세요.'],['관계','가족의 사랑을 듬뿍 받는 해. 애교가 늘어날지도 몰라요.']]},
+ out:{key:'활동운',desc:'아이의 기운이 밖으로 뻗어 나가는 해예요. 산책과 놀이 욕구가 평소보다 커져요.',lines:[['산책·놀이','에너지가 넘치는 해. 산책 시간을 조금 늘려 주세요.'],['쉼·컨디션','신나게 쓴 만큼 충분히 쉬어야 해요. 잠자리를 아늑하게.'],['관계','먼저 다가가는 일이 많아지는 해. 새 친구 사귀기 좋아요.']]},
+ test:{key:'단련운',desc:'아이의 기운을 누르는 기운이 들어오는 해예요. 나쁜 해가 아니라, 조금씩 단단해지는 해예요.',lines:[['산책·놀이','무리한 일정보다 익숙한 코스가 좋아요.'],['쉼·컨디션','평소보다 몸 상태를 자주 살펴봐 주세요. 이상하면 병원과 상의하세요.'],['관계','낯선 환경 앞에서 예민해질 수 있어요. 보호자 곁이 가장 큰 안정이에요.']]},
+ win:{key:'결실운',desc:'아이가 올해의 기운을 다스리는 해예요. 노력한 만큼 결과가 나오는 해라 훈련 성과가 좋아요.',lines:[['산책·놀이','미뤄둔 훈련이나 새 개인기에 도전해 보세요.'],['쉼·컨디션','욕심내다 지치지 않게, 칭찬과 휴식을 같이 주세요.'],['관계','자신감이 붙는 해. 다른 동물 앞에서도 당당해져요.']]}};
+const YBR = {hap:'올해의 지지와 아이의 일지가 육합을 이뤄요. 일상의 리듬이 잘 맞는 한 해예요.',ban:'올해의 지지와 아이의 일지가 반합을 이뤄요. 좋은 인연이 생기기 쉬워요.',chung:'올해의 지지와 아이의 일지가 충(沖)을 이뤄요. 이사·여행 같은 변화가 생기기 쉬우니 익숙한 물건을 챙겨 주세요.'};
+const NICK = [
+ {ko:['솔','숲','새싹','잎새','초롱','버들'],en:['Forest','Olive','Leaf']},
+ {ko:['햇살','노을','해님','단풍','반디','불꽃'],en:['Sunny','Ruby','Blaze']},
+ {ko:['보리','콩떡','호박','밤톨','누룽지','고구마'],en:['Honey','Cookie','Maple']},
+ {ko:['구슬','진주','은방울','방울','다이아','은비'],en:['Pearl','Silver','Bell']},
+ {ko:['바다','이슬','구름','물결','파도','윤슬'],en:['Ocean','River','Rain']}];
+const PAL = [
+ {word:'초록',name:'숲의 초록',sw:[['포레스트','#2F5D46'],['세이지','#8FA98A'],['올리브','#6B7A3A'],['민트','#BFD8C6']],dir:'동쪽',time:'이른 아침 (5~9시)',mood:'싱그럽고 생기 있는'},
+ {word:'레드',name:'노을의 빨강',sw:[['체리','#B8312F'],['코랄','#E8735A'],['피치','#F4B9A0'],['버건디','#6E1F2A']],dir:'남쪽',time:'오전~한낮 (9~13시)',mood:'따뜻하고 활기찬'},
+ {word:'베이지',name:'흙의 황토',sw:[['머스터드','#D6A12F'],['카멜','#B9875A'],['베이지','#E6D3B0'],['테라코타','#B5603E']],dir:'가까운 동네 한 바퀴',time:'오전 7~9시 · 오후 1~3시',mood:'포근하고 안정적인'},
+ {word:'화이트',name:'달빛의 흰색',sw:[['아이보리','#F2EEE6'],['실버그레이','#B8B8B4'],['샴페인','#E3D3B1'],['퓨어화이트','#FFFFFF']],dir:'서쪽',time:'늦은 오후 (15~19시)',mood:'깔끔하고 세련된'},
+ {word:'네이비',name:'밤바다의 검정',sw:[['네이비','#22324A'],['딥블루','#2E5A88'],['차콜','#3E4248'],['블랙','#1A1A1A']],dir:'북쪽',time:'밤 산책 (21~1시)',mood:'차분하고 깊이 있는'}];
+
+const $ = s => document.querySelector(s);
+const jo = (w,a,b) => { const c = w.charCodeAt(w.length-1); return (c>=0xAC00&&c<=0xD7A3&&(c-0xAC00)%28) ? a : b; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = d => `${d[0]}. ${d[1]}. ${d[2]}.`;
+const fmtIn = v => { v = String(v||''); const p = v.split(/\D+/);
+  if (!/\D/.test(v) || p[0].length > 4) { const d = v.replace(/\D/g,'').slice(0,8); return d.length > 6 ? `${d.slice(0,4)}.${d.slice(4,6)}.${d.slice(6)}` : d.length > 4 ? `${d.slice(0,4)}.${d.slice(4)}` : d; }
+  let [y, m = '', dd = ''] = p; if (p.length === 2 && m.length > 2) { dd = m.slice(2, 4); m = m.slice(0, 2); }
+  return y.slice(0,4) + (p.length > 1 || m ? '.' + m.slice(0,2) : '') + (p.length > 2 || dd ? '.' + dd.slice(0,2) : ''); };
+const parse = v => { const p = String(v||'').split(/\D+/).filter(Boolean); let y, m, dd;
+  if (p.length === 1 && p[0].length === 8) { y = +p[0].slice(0,4); m = +p[0].slice(4,6); dd = +p[0].slice(6); }
+  else if (p.length === 3 && p[0].length === 4) { y = +p[0]; m = +p[1]; dd = +p[2]; } else return null;
+  const t = new Date(Date.UTC(y, m-1, dd)); return (t.getUTCFullYear()===y && t.getUTCMonth()===m-1 && t.getUTCDate()===dd) ? [y,m,dd] : null; };
+const num = p => p[0]*10000 + p[1]*100 + p[2];
+const li = arr => arr.map(t => `<li>${esc(t)}</li>`).join('');
+
+$('#elgrid').innerHTML = EL.map((e,i) => `<div class="el" style="background:${e.bg};color:${e.fg}"><span class="han">${e.han}</span><div><small>${e.ko}의 기운</small><span>${SAJU.STEMS[i*2]}  ${TYPES[i*2].name}</span><span>${SAJU.STEMS[i*2+1]}  ${TYPES[i*2+1].name}</span></div></div>`).join('');
+
+let photoURL = null, last = null;
+$('#photo').addEventListener('change', e => { const f = e.target.files[0]; if (photoURL) URL.revokeObjectURL(photoURL); photoURL = f ? URL.createObjectURL(f) : null; });
+try { const s = JSON.parse(localStorage.getItem('baldojang-form')||'{}'); for (const k of ['name','adopt','birth','owner']) if (s[k]) $('#'+k).value = s[k]; if (s.kind) { const r = document.querySelector(`input[name=kind][value=${s.kind}]`); if (r) r.checked = true; } } catch(e) {}
+const today = new Date(); const tnum = today.getFullYear()*10000 + (today.getMonth()+1)*100 + today.getDate();
+const pad = p => `${p[0]}.${String(p[1]).padStart(2,'0')}.${String(p[2]).padStart(2,'0')}`;
+document.querySelectorAll('.dt').forEach(el => { const p0 = parse(el.value); el.value = p0 ? pad(p0) : fmtIn(el.value); el.addEventListener('input', () => { el.value = fmtIn(el.value); }); el.addEventListener('blur', () => { const p = parse(el.value); if (p) el.value = pad(p); }); });
+
+$('#f').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('#name').value.trim() || '우리 아이';
+  const kind = document.querySelector('input[name=kind]:checked').value;
+  const a = parse($('#adopt').value), b = parse($('#birth').value), o = parse($('#owner').value);
+  const err = $('#err');
+  const bad = (id, msg) => { err.textContent = msg; $('#'+id).focus(); };
+  if (!a) return bad('adopt', $('#adopt').value ? '가족이 된 날을 다시 확인해 주세요. (예: 2023.05.03)' : '가족이 된 날을 넣어 주세요.');
+  if ($('#birth').value && !b) return bad('birth', '생일을 다시 확인해 주세요. 모르면 비워 두셔도 돼요.');
+  if (!o) return bad('owner', $('#owner').value ? '보호자 생년월일을 다시 확인해 주세요. (예: 1990.03.15)' : '보호자 생년월일을 넣어 주세요.');
+  for (const [p, id, lo] of [[a,'adopt',1950],[b,'birth',1950],[o,'owner',1920]]) { if (!p) continue; if (num(p) > tnum) return bad(id, '미래 날짜는 넣을 수 없어요.'); if (p[0] < lo) return bad(id, `${lo}년 이후 날짜만 계산할 수 있어요.`); }
+  if (b && num(b) > num(a)) return bad('birth', '생일이 가족이 된 날보다 늦어요. 날짜를 확인해 주세요.');
+  err.textContent = '';
+  try { localStorage.setItem('baldojang-form', JSON.stringify({name:$('#name').value.trim(),kind,adopt:$('#adopt').value,birth:$('#birth').value,owner:$('#owner').value})); } catch(e) {}
+  render(name, kind, a, b, o);
+});
+
+function render(name, kind, a, b, o) {
+  const pet = SAJU.chart(...a), own = SAJU.chart(...o), cp = SAJU.compat(pet, own, { o: '보호자', p: name });
+  const st = pet.dayStem, ei = SAJU.STEM_EL[st], el = EL[ei], ty = TYPES[st], nm = name;
+  last = {name, a, cp, st, el, ty};
+  $('#result').hidden = false;
+  const ph = $('#rphoto'); ph.style.background = el.bg; ph.style.color = el.fg;
+  ph.innerHTML = photoURL ? `<img src="${photoURL}" alt="${esc(nm)} 사진">` : `<span class="han">${SAJU.STEMS[st]}</span>`;
+  const hd = $('#rhead'); hd.style.background = el.bg; hd.style.color = el.fg;
+  $('#rdate').textContent = `${fmt(a)} 가족이 된 ${nm} · ${SAJU.STEMS[st]}${el.han} 일간`;
+  $('#rtitle').innerHTML = `${esc(nm)}${jo(nm,'은','는')}<br>${esc(ty.name)}.`;
+  $('#rline').textContent = ty.line;
+  $('#rchips').innerHTML = ty.keys.map(k => `<span>${esc(k)}</span>`).join('');
+  $('#rpil').innerHTML = pet.pillars.map((p,i) => `<div class="${i===2?'on':''}"><small>${['연','월','일'][i]}</small><span class="han">${SAJU.han(p)}</span></div>`).join('');
+  $('#rnote').textContent = '태어난 시간이 없어 세 기둥으로 풀었어요.' + (pet.boundary ? ' 이 날은 절기가 바뀌는 날이라 월주가 하루 중 시각에 따라 달라질 수 있어요.' : '');
+  $('#rabout').innerHTML = ty.about.map(t => `<p>${esc(t)}</p>`).join('');
+  $('#rlists').innerHTML = [['이런 걸 좋아해요',ty.likes,el.bar],['이럴 땐 예민해요',ty.careful,'#8a8a8a'],['보호자 사용설명서',ty.tips,'#C42A1E']].map(([h,arr,c]) => `<div class="box" style="--dot:${c}"><h4>${h}</h4><ul>${li(arr)}</ul></div>`).join('');
+  $('#rbars').innerHTML = pet.counts.map((n,i) => `<div class="bar"><span>${EL[i].han} ${EL[i].ko}</span><i><b style="width:${Math.min(100, Math.round(n/3*100))}%;background:${EL[i].bar}"></b></i><em>${n}</em></div>`).join('');
+  const mx = Math.max(...pet.counts), strong = pet.counts.map((n,i)=>n===mx?i:-1).filter(i=>i>=0), miss = pet.counts.map((n,i)=>n===0?i:-1).filter(i=>i>=0);
+  let ex = mx >= 2 ? strong.map(i => `<p><b>가장 강한 기운 · ${EL[i].ko}(${EL[i].han})</b><br>${esc(STRONG[i])}</p>`).join('') : `<p><b>고르게 퍼진 기운</b><br>어느 한쪽으로 치우치지 않아 상황에 따라 여러 얼굴을 보여줘요.</p>`;
+  ex += miss.length ? miss.map(i => `<p><b>없는 기운 · ${EL[i].ko}(${EL[i].han})</b><br>${esc(MISSING[i])}</p>`).join('') : `<p><b>빠진 기운 없음</b><br>다섯 기운을 모두 갖췄어요. 균형 잡힌 아이예요.</p>`;
+  $('#relx').innerHTML = ex;
+  const ss = SEASON[seasonOf(pet.pillars[1][1])];
+  $('#rseason').innerHTML = `<p><b>${ss[0]} · ${SAJU.han(pet.pillars[1])}월</b><br>${esc(ss[1])}</p>`;
+  if (b) { const bt = SAJU.chart(...b).dayStem; $('#rbirthsec').hidden = false;
+    $('#rbirth').innerHTML = `<p><b>${SAJU.STEMS[bt]} ${esc(TYPES[bt].name)}</b><br>${esc(TYPES[bt].about[0])}</p><p style="color:var(--sub)">${bt===st ? '타고난 기질과 가족이 된 날의 기운이 같아요. 처음부터 이 집 아이가 될 운명이었나 봐요.' : `타고난 기질은 ${esc(TYPES[bt].name)}, 가족이 된 뒤의 기운은 ${esc(ty.name)}. 우리 집에 오며 새로운 장이 열렸어요.`}</p>`;
+  } else $('#rbirthsec').hidden = true;
+  const ct = CT[cp.type];
+  const fix = t => t.replace('아이의', nm + '의').replace('아이가', nm + jo(nm,'이','가')).replace('아이를', nm + jo(nm,'을','를'));
+  $('#cwho').innerHTML = `보호자 <span class="han">${SAJU.STEMS[own.dayStem]}</span>${EL[SAJU.STEM_EL[own.dayStem]].ko} × ${esc(nm)} <span class="han">${SAJU.STEMS[st]}</span>${el.ko}`;
+  $('#ctype').textContent = `${ct.name} 궁합`;
+  $('#cscore').textContent = cp.score;
+  $('#cdesc').textContent = ct.desc;
+  $('#ctips').innerHTML = li(ct.tips);
+  const head = r => r[1].split(' — ')[0];
+  const rows = cp.reasons.map(r => { const bExp = (cp.B !== 0 && r[0] === cp.B && /육합|반합|충/.test(r[1])) ? BREL[String(cp.B)] : (r[1].includes(' — ') ? r[1].split(' — ')[1] : ''); return `<div class="rs"><b class="${r[0]<0?'m':''}">${r[0]>0?'+':'−'}${Math.abs(r[0])}</b><div><strong>${esc(fix(head(r)))}</strong>${bExp?`<span>${esc(bExp)}</span>`:''}</div></div>`; });
+  if (cp.B === 0) rows.push(`<div class="rs"><b class="m">0</b><div><strong>일지 관계 무난</strong><span>${esc(BREL[0])}</span></div></div>`);
+  $('#creasons').innerHTML = rows.join('');
+  $('#cfoot').textContent = `보호자 ${SAJU.ko(own.pillars[0])}년 ${SAJU.ko(own.pillars[1])}월 ${SAJU.ko(own.pillars[2])}일 · 기본 60점에서 더하고 빼 60~99점으로 계산해요.`;
+  $('#fbmsg').textContent = '';
+  const sp = kind === 'cat' ? '고양이' : '강아지';
+  $('#shoptitle').textContent = `${nm}에게 어울리는 물건`;
+  $('#goods').innerHTML = GOODS[ei].map(g => `<a class="good" href="https://www.coupang.com/np/search?q=${encodeURIComponent(sp + ' ' + g[0])}" target="_blank" rel="noopener"><b>${g[0]}</b><span>${g[1]}</span><u>상품 보러 가기 →</u></a>`).join('');
+  $('#savemsg').textContent = '';
+  last.pet = pet; last.own = own;
+  renderMore(nm, a, pet);
+  renderColor(nm, pet, kind);
+  drawCard(); drawCard2();
+  $('#result').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
+}
+
+const won = n => n.toLocaleString('ko-KR');
+const dayNum = p => Date.UTC(p[0], p[1]-1, p[2]) / 86400000;
+const fromNum = n => { const d = new Date(n * 86400000); return [d.getUTCFullYear(), d.getUTCMonth()+1, d.getUTCDate()]; };
+const todayP = () => { const d = new Date(); return [d.getFullYear(), d.getMonth()+1, d.getDate()]; };
+const brRel = (a, b) => (a + b) % 12 === 1 ? 'hap' : (a !== b && a % 4 === b % 4) ? 'ban' : Math.abs(a - b) === 6 ? 'chung' : '';
+function bindDt(el) { el.addEventListener('input', () => { el.value = fmtIn(el.value); }); el.addEventListener('blur', () => { const p = parse(el.value); if (p) el.value = pad(p); }); }
+function addRow(box, ph1, ph2) {
+  const r = document.createElement('div'); r.className = 'row';
+  r.innerHTML = `<input type="text" maxlength="12" autocomplete="off" aria-label="이름" placeholder="${ph1}"><input type="text" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" aria-label="날짜" placeholder="${ph2}"><button type="button" class="x" aria-label="이 줄 지우기">×</button>`;
+  bindDt(r.children[1]); r.children[2].addEventListener('click', () => { if (box.children.length > 1) r.remove(); else { r.children[0].value = ''; r.children[1].value = ''; } });
+  box.appendChild(r); return r;
+}
+const famBox = $('#famrows'), sibBox = $('#sibrows');
+addRow(famBox, '엄마', '1962.04.18'); addRow(famBox, '아빠', '1960.09.02');
+addRow(sibBox, '둘째 이름', '2024.10.01');
+$('#famadd').addEventListener('click', () => { if (famBox.children.length < 8) addRow(famBox, '가족 이름', '1990.01.01').children[0].focus(); });
+$('#sibadd').addEventListener('click', () => { if (sibBox.children.length < 6) addRow(sibBox, '아이 이름', '2022.01.01').children[0].focus(); });
+function readRows(box, errEl, what) {
+  const out = []; errEl.textContent = '';
+  for (const r of box.children) {
+    const n = r.children[0].value.trim(), v = r.children[1].value.trim();
+    if (!n && !v) continue;
+    const p = parse(v);
+    if (!n) { errEl.textContent = `${what} 이름을 넣어 주세요.`; r.children[0].focus(); return null; }
+    if (!p || num(p) > tnum || p[0] < 1920) { errEl.textContent = `${n}의 날짜를 다시 확인해 주세요. (예: 1990.03.15)`; r.children[1].focus(); return null; }
+    out.push({ n, p });
+  }
+  if (!out.length) { errEl.textContent = `${what}을(를) 한 명 이상 넣어 주세요.`; return null; }
+  return out;
+}
+$('#famgo').addEventListener('click', () => {
+  if (!last) return; const list = readRows(famBox, $('#famerr'), '가족'); if (!list) return;
+  const pn = last.name;
+  const all = [{ n: '나 (보호자)', c: last.own }].concat(list.map(m => ({ n: m.n, c: SAJU.chart(...m.p) })));
+  const res = all.map((m, i) => ({ ...m, i, cp: SAJU.compat(last.pet, m.c, { o: m.n === '나 (보호자)' ? '보호자' : m.n, p: pn }) }))
+    .sort((x, y) => y.cp.score - x.cp.score || x.i - y.i);
+  const topScore = res[0].cp.score, tops = res.filter(r => r.cp.score === topScore).map(r => r.n);
+  let rank = 0, prev = null;
+  $('#famres').innerHTML = `<p class="headline" style="margin:14px 0 6px">${esc(pn)}${SAJU.jo(pn,'과','와')} 제일 잘 맞는 사람은 ${tops.map(esc).join(', ')}${tops.length > 1 ? ' (공동 1위)' : ''}!</p>` +
+    res.map((r, k) => { if (r.cp.score !== prev) { rank = k + 1; prev = r.cp.score; }
+      return `<div class="rank${rank === 1 ? ' top' : ''}"><span class="n">${rank}</span><div><strong>${esc(r.n)} · <span class="han" style="display:inline;color:inherit">${SAJU.STEMS[r.c.dayStem]}</span> ${EL[SAJU.STEM_EL[r.c.dayStem]].ko}</strong><span>${CT[r.cp.type].name} · ${esc(r.cp.reasons[0][1].split(' — ')[0])}</span></div><span class="sc">${r.cp.score}</span></div>`; }).join('');
+});
+$('#sibgo').addEventListener('click', () => {
+  if (!last) return; const list = readRows(sibBox, $('#siberr'), '아이'); if (!list) return;
+  const pn = last.name;
+  const lab = (t, s) => ({ hap: '찰떡 운명', care: `${s}${SAJU.jo(s,'이','가')} 챙겨주는 사이`, heal: `${pn}${SAJU.jo(pn,'이','가')} 챙겨주는 사이`, twin: '쌍둥이 같은 사이', spark: '티격태격 라이벌' })[t];
+  $('#sibres').innerHTML = list.map(s => { const c = SAJU.chart(...s.p), cp = SAJU.compat(last.pet, c, { o: s.n, p: pn }), ts = TYPES[c.dayStem];
+    return `<div class="box" style="margin-top:16px"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><div><h4>${esc(pn)} × ${esc(s.n)}</h4><span style="color:var(--sub);font-size:15px">${esc(s.n)}${SAJU.jo(s.n,'은','는')} ${SAJU.STEMS[c.dayStem]} ${esc(ts.name)}</span></div><span class="sc" style="font-size:34px;font-weight:800;letter-spacing:-.05em">${cp.score}</span></div>
+    <p class="headline" style="font-size:21px">${esc(lab(cp.type, s.n))}</p><ul>${cp.reasons.map(r => `<li>${esc(r[1])}</li>`).join('')}</ul></div>`; }).join('');
+});
+function renderColor(name, pet, kind) {
+  const me = SAJU.STEM_EL[pet.dayStem], P = PAL[me];
+  const cand = [0,1,2,3,4].filter(i => i !== me), mn = Math.min(...cand.map(i => pet.counts[i]));
+  const sup = cand.find(i => pet.counts[i] === mn), S = PAL[sup], sp = kind === 'cat' ? '고양이' : '강아지';
+  const lum = h => { const n = parseInt(h.slice(1),16); return (n>>16)*.299 + ((n>>8)&255)*.587 + (n&255)*.114; };
+  const soft = p => p.sw.slice().sort((x,y) => lum(y[1]) - lum(x[1]))[me === 4 ? 2 : 0][0];
+  const sws = p => `<div class="sws">${p.sw.map(s => `<div class="sw"><i style="background:${s[1]}"></i><b>${s[0]}</b><small>${s[1]}</small></div>`).join('')}</div>`;
+  const shop = (w, item) => `https://www.coupang.com/np/search?q=${encodeURIComponent(sp + ' ' + item + ' ' + w)}`;
+  $('#pcbody').innerHTML = `<p><b>${esc(name)}의 컬러는 ${P.name}.</b> 일간 ${SAJU.STEMS[pet.dayStem]}의 ${EL[me].ko}(${EL[me].han}) 기운을 담은, ${P.mood} 색이에요. 가장 잘 어울리는 메인 컬러예요.</p>${sws(P)}
+<p><b>채워주는 컬러는 ${S.name}.</b> ${esc(name)}에게 ${pet.counts[sup] === 0 ? '없는' : '적은'} ${EL[sup].ko}(${EL[sup].han}) 기운의 색이에요. 소품 하나로 포인트를 주면 기운의 균형을 맞춰 줘요.</p>${sws(S)}
+<div class="use">
+<div class="box"><h4>목줄·하네스</h4><p style="font-size:15px;line-height:1.6">메인 컬러 ${P.sw[0][0]}로. 사진에도 ${esc(name)}의 분위기가 그대로 살아요.</p><a class="good" style="padding:0;background:none" href="${shop(P.word,'하네스')}" target="_blank" rel="noopener"><u>${P.word} 하네스 보기 →</u></a></div>
+<div class="box"><h4>옷·반다나</h4><p style="font-size:15px;line-height:1.6">채워주는 컬러 ${S.sw[1][0]}를 포인트로. 부족한 기운을 입혀 주세요.</p><a class="good" style="padding:0;background:none" href="${shop(S.word,'반다나')}" target="_blank" rel="noopener"><u>${S.word} 반다나 보기 →</u></a></div>
+<div class="box"><h4>방석·담요</h4><p style="font-size:15px;line-height:1.6">쉬는 자리는 ${soft(P)} 계열로 차분하고 편안하게.</p></div>
+<div class="box"><h4>프로필 사진 배경</h4><p style="font-size:15px;line-height:1.6">${P.sw[1][0]} 벽이나 천 앞에서 찍으면 화보 느낌이 나요.</p></div>
+</div>
+<p><b>행운의 산책</b><br>${esc(name)}의 기운을 채우는 방향은 <b>${S.dir}</b>, 시간대는 <b>${S.time}</b>이에요. 가끔 이 방향, 이 시간에 산책해 보세요.</p>
+<p class="note" style="color:var(--sub)">오행에 따른 색(목 청·화 적·토 황·금 백·수 흑)과 방위를 바탕으로 한 재미용 추천이에요. 시간대는 해당 기운의 지지 시각 기준이에요.</p>`;
+}
+function renderMore(name, a, pet) {
+  const tp = todayP(), yc = SAJU.chart(...tp), yp = yc.pillars[0];
+  const yy = SAJU.han(SAJU.chart(tp[0], 6, 1).pillars[0]) === SAJU.han(yp) ? tp[0] : tp[0] - 1;
+  const ye = SAJU.STEM_EL[yp[0]], pe = SAJU.STEM_EL[pet.dayStem];
+  const k = ye === pe ? 'same' : (ye + 1) % 5 === pe ? 'help' : (pe + 1) % 5 === ye ? 'out' : (ye + 2) % 5 === pe ? 'test' : 'win';
+  const Y = YEAR[k], br = brRel(yp[1], pet.dayBr);
+  $('#ytitle').innerHTML = `${yy}년 <span class="han">${SAJU.han(yp)}</span>년<br>${Y.key}`;
+  $('#ybody').innerHTML = `<p>${esc(Y.desc)}${br ? ' ' + esc(YBR[br]) : ''}</p><div class="three">${Y.lines.map(l => `<div class="box"><h4>${l[0]}</h4><p style="font-size:16px;line-height:1.6">${esc(l[1])}</p></div>`).join('')}</div><p class="note" style="color:var(--sub)">올해 ${SAJU.han(yp)}의 ${EL[ye].ko}(${EL[ye].han}) 기운과 ${esc(name)}의 일간 ${SAJU.STEMS[pet.dayStem]}${EL[pe].ko}(${EL[pe].han})을 비교했어요. 연도는 입춘 기준으로 바뀌어요. 재미로 봐 주세요.</p>`;
+  const A = dayNum(a), T = dayNum(tp), together = T - A + 1;
+  let ny = tp[0], cand;
+  const mk = y => { const leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0; return dayNum([y, a[1], (a[1] === 2 && a[2] === 29 && !leap) ? 28 : a[2]]); };
+  cand = mk(ny); if (cand < T || ny === a[0]) { ny++; cand = mk(ny); }
+  const isToday = mk(tp[0]) === T && tp[0] > a[0];
+  const done = tp[0] - a[0] - (mk(tp[0]) > T ? 1 : 0);
+  const ms = [100, 200, 300, 500, 1000, 1500, 2000, 3000, 4000, 5000].find(m => m > together);
+  const msDate = ms ? fromNum(A + ms - 1) : null;
+  last.anv = { together, done, isToday };
+  $('#astat').innerHTML = `<div><small>함께한 날</small><b>${won(together)}일째</b></div>` +
+    `<div><small>${isToday ? '오늘은' : '다음 기념일'}</small><b>${isToday ? `${done}주년이에요!` : `${ny - a[0]}주년 · D-${won(cand - T)}`}</b><small>${isToday ? '가족이 된 날 축하해요' : fmt(fromNum(cand))}</small></div>` +
+    (ms ? `<div><small>다음 기념</small><b>${won(ms)}일 · D-${won(A + ms - 1 - T)}</b><small>${fmt(msDate)}</small></div>` : '');
+  const miss = pet.counts.map((n, i) => n === 0 ? i : -1).filter(i => i >= 0);
+  const mn = Math.min(...pet.counts), tgt = miss.length ? miss : pet.counts.map((n, i) => n === mn ? i : -1).filter(i => i >= 0).slice(0, 2);
+  $('#nickbody').innerHTML = `<p>${esc(name)}에게 ${miss.length ? '없는' : '상대적으로 적은'} 기운을 이름의 뜻으로 채워 보는 별명이에요. 둘째 이름을 지을 때 참고해도 좋아요.</p>` +
+    tgt.map(i => `<div class="box"><h4>${EL[i].ko}(${EL[i].han}) 기운을 채우는 이름</h4><div class="nick">${NICK[i].ko.concat(NICK[i].en).map(w => `<span>${esc(w)}</span>`).join('')}</div></div>`).join('') +
+    `<p class="note" style="color:var(--sub)">한글 발음으로 오행을 나누는 '소리오행'은 기준이 갈려서 쓰지 않고, 이름의 뜻으로만 골랐어요.</p>`;
+  $('#famres').innerHTML = ''; $('#sibres').innerHTML = ''; $('#famerr').textContent = ''; $('#siberr').textContent = ''; $('#savemsg2').textContent = '';
+}
+async function drawCard2() {
+  if (!last || !last.anv) return;
+  const ci = $('#cvimg2'); if (ci) { ci.remove(); $('#cv2').hidden = false; }
+  const c = $('#cv2'), x = c.getContext('2d'); if (!x) return;
+  const { name, a, st, el, anv } = last, F = 'Pretendard, sans-serif';
+  try { await Promise.all([document.fonts.load('800 100px Pretendard'), document.fonts.load('900 100px "Noto Sans KR"', SAJU.STEMS[st] + '발도장')]); } catch(e) {}
+  x.fillStyle = el.bg; x.fillRect(0, 0, 1080, 1350); let fg = el.fg;
+  if (photoURL) { try { const im = await loadImg(photoURL); const s = Math.max(1080/im.width, 1350/im.height), w = im.width*s, h = im.height*s; x.drawImage(im, (1080-w)/2, (1350-h)/2, w, h); x.fillStyle = 'rgba(0,0,0,0.34)'; x.fillRect(0, 760, 1080, 590); fg = '#FFFFFF'; } catch(e) {} }
+  else { x.fillStyle = fg; x.globalAlpha = .13; x.font = '900 700px "Noto Sans KR"'; x.textAlign = 'center'; x.textBaseline = 'alphabetic'; x.fillText(SAJU.STEMS[st], 540, 760); x.globalAlpha = 1; }
+  x.textAlign = 'left'; x.textBaseline = 'top'; x.fillStyle = fg;
+  if (!photoURL) { drawSeal(x, 72, 60, 50); x.font = '900 34px "Noto Sans KR"'; x.fillText('발도장', 136, 68); }
+  const big = anv.done >= 1 ? `${anv.done}주년` : `${won(anv.together)}일째`;
+  x.font = `600 40px ${F}`; x.fillText(`${name}${SAJU.jo(name,'과','와')} 함께한`, 72, 860);
+  let size = 200; x.font = `800 ${size}px ${F}`; while (x.measureText(big).width > 936 && size > 90) { size -= 10; x.font = `800 ${size}px ${F}`; }
+  x.fillText(big, 64, 920);
+  x.font = `600 32px ${F}`; x.fillText(`${fmt(a)} 가족이 된 날 · 오늘까지 ${won(anv.together)}일`, 74, 1250);
+  if (photoURL) { drawSeal(x, 958, 1236, 50); }
+}
+$('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2'), '기념일', 'cvimg2'));
+
+document.querySelectorAll('[data-fb]').forEach(btn => btn.addEventListener('click', () => {
+  $('#fbmsg').textContent = btn.dataset.fb === '1' ? '역시! 가족이 된 날이 괜히 특별한 게 아니죠.' : '그럴 수 있어요. 사주는 기운의 방향일 뿐, 진짜 성격은 함께한 시간이 만들어요.';
+}));
+
+function drawSeal(x, X, Y, S) {
+  const k = S / 40; x.save(); x.translate(X, Y); x.scale(k, k);
+  x.fillStyle = '#C42A1E'; x.beginPath(); if (x.roundRect) x.roundRect(1, 1, 38, 38, 7); else x.rect(1, 1, 38, 38); x.fill();
+  x.fillStyle = '#FFFFFF';
+  for (const [cx, cy, rx, ry, r] of [[20,26,8.5,7,0],[10.5,17,3.4,4.2,-20],[16.5,11,3.4,4.4,0],[23.5,11,3.4,4.4,0],[29.5,17,3.4,4.2,20]]) { x.beginPath(); x.ellipse(cx, cy, rx, ry, r * Math.PI / 180, 0, Math.PI * 2); x.fill(); }
+  x.restore();
+}
+function loadImg(src) { return new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = src; }); }
+async function drawCard() {
+  if (!last) return;
+  const ci = $('#cvimg'); if (ci) { ci.remove(); $('#cv').hidden = false; }
+  const {name, a, cp, st, el, ty} = last, c = $('#cv'), x = c.getContext('2d');
+  if (!x) return;
+  try { await Promise.all([document.fonts.load('800 100px Pretendard'), document.fonts.load('600 30px Pretendard'), document.fonts.load('900 100px "Noto Sans KR"', SAJU.STEMS[st] + '발도장')]); } catch(e) {}
+  const F = 'Pretendard, sans-serif';
+  x.fillStyle = el.bg; x.fillRect(0, 0, 1080, 1350);
+  let fg = el.fg;
+  if (photoURL) {
+    try { const im = await loadImg(photoURL); const s = Math.max(1080/im.width, 1350/im.height), w = im.width*s, h = im.height*s; x.drawImage(im, (1080-w)/2, (1350-h)/2, w, h);
+      x.fillStyle = 'rgba(0,0,0,0.34)'; x.fillRect(0, 0, 1080, 560); fg = '#FFFFFF'; } catch(e) {}
+  } else {
+    x.fillStyle = fg; x.globalAlpha = .13; x.font = '900 760px "Noto Sans KR"'; x.textAlign = 'center'; x.textBaseline = 'alphabetic'; x.fillText(SAJU.STEMS[st], 540, 1110); x.globalAlpha = 1;
+  }
+  x.textAlign = 'left'; x.textBaseline = 'top'; x.fillStyle = fg;
+  drawSeal(x, 72, 60, 50); x.font = '900 34px "Noto Sans KR"'; x.fillText('발도장', 136, 68);
+  x.font = `600 26px ${F}`; x.textAlign = 'right'; x.fillText(`${fmt(a)} 가족이 된 날`, 1008, 74); x.textAlign = 'left';
+  let size = 116; const l1 = `${name}${jo(name,'은','는')}`, l2 = `${ty.name}.`;
+  const setF = () => { x.font = `800 ${size}px ${F}`; if ('letterSpacing' in x) x.letterSpacing = `${-size*0.05}px`; };
+  setF(); while (Math.max(x.measureText(l1).width, x.measureText(l2).width) > 936 && size > 60) { size -= 4; setF(); }
+  x.fillText(l1, 72, 160); x.fillText(l2, 72, 160 + size * 1.08);
+  if ('letterSpacing' in x) x.letterSpacing = '0px';
+  x.font = `600 34px ${F}`; x.fillText(ty.line, 74, 160 + size * 2.3);
+  x.fillStyle = '#FFFFFF'; x.beginPath(); if (x.roundRect) { x.roundRect(72, 1104, 936, 182, 12); x.fill(); } else x.fillRect(72, 1104, 936, 182);
+  x.fillStyle = '#5a5a5a'; x.font = `600 26px ${F}`; x.fillText('보호자와의 궁합', 112, 1140);
+  x.fillStyle = '#141414'; x.font = `700 38px ${F}`; x.fillText(`${CT[cp.type].name} · ${SAJU.STEMS[st]} ${ty.name}`, 112, 1186);
+  x.fillStyle = '#C42A1E'; x.font = `800 124px ${F}`; x.textAlign = 'right'; x.textBaseline = 'middle'; x.fillText(String(cp.score), 968, 1196);
+}
+
+let dl = null;
+(async () => { try { if (window.claude && claude.use) dl = await claude.use('downloads'); } catch(e) { dl = null; } })();
+function saveCanvas(cv, msg, label, imgId) {
+  cv.toBlob(async blob => {
+    if (!blob) { msg.textContent = '카드를 만들지 못했어요. 다시 시도해 주세요.'; return; }
+    if (dl) {
+      try { await dl.save({filename: `${(last && last.name) || '우리아이'}_발도장_${label}.png`, data: blob}); msg.textContent = '저장했어요.'; return; }
+      catch(e) { if (e && e.code === 'declined') { msg.textContent = '저장을 취소했어요.'; return; } }
+    }
+    const inClaude = /claude\.(ai|site)|claudeusercontent/.test(location.hostname);
+    if (!inClaude) { try { const u = URL.createObjectURL(blob), l = document.createElement('a'); l.href = u; l.download = `${(last && last.name) || '우리아이'}_발도장_${label}.png`; document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); msg.textContent = '저장했어요. 안 보이면 카드를 길게 눌러 저장해 주세요.'; return; } catch(e) {} }
+    msg.textContent = '이 화면에서는 바로 저장이 안 돼요. 카드를 길게 누르거나 우클릭해서 이미지로 저장해 주세요.';
+    let img = document.getElementById(imgId); if (!img) { img = new Image(); img.id = imgId; img.alt = label + ' 카드'; cv.after(img); }
+    img.src = URL.createObjectURL(blob); cv.hidden = true;
+  }, 'image/png');
+}
+$('#save').addEventListener('click', () => saveCanvas($('#cv'), $('#savemsg'), '궁합', 'cvimg'));
+}
+</script>
+</body>
+</html>
