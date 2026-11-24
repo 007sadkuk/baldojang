@@ -206,7 +206,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 </section>
 
 <section class="adopt" id="waiting" hidden><div class="wrap">
-<div class="head"><h2>가족을 기다리는<br>아이들.</h2><p style="color:var(--sub);max-width:420px">전국 동물보호센터에서 보호 중인 아이들이에요. 마음에 닿는 아이가 있다면 데려오는 날의 궁합을 미리 봐 보세요.</p></div>
+<div class="head"><h2>가족을 기다리는<br>아이들.</h2><p style="color:var(--sub);max-width:420px">전국 동물보호센터에서 보호 중인 아이들이에요. 마음에 닿는 아이가 있다면 보호소에 직접 문의해 주세요.</p></div>
 <div class="filters"><div class="pills" role="radiogroup" aria-label="종류">
 <label class="pill"><input type="radio" name="asp" value="dog" checked><span>강아지</span></label>
 <label class="pill"><input type="radio" name="asp" value="cat"><span>고양이</span></label></div>
@@ -703,7 +703,7 @@ $('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2')
       return `<article class="acard"><img src="${esc(a.photo)}" alt="${esc(a.kind)} ${esc(sexK(a.sex))}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.acard').remove()">
       <div class="in"><b>${esc(a.kind)} · ${esc(sexK(a.sex))}</b><span>${esc(ageK(a.age))} · ${esc(a.weight)}</span><span>${esc(a.care)} (${esc(a.org)})</span><div>${notice}</div>
       ${a.mark ? `<span>${esc(a.mark)}</span>` : ''}
-      <div class="acts2"><button type="button" class="p" data-cp="${esc(a.id)}">데려오는 날 궁합</button><button type="button" data-sh="${esc(a.id)}">공유</button></div>
+      <div class="acts2"><a class="p" href="tel:${esc(a.tel)}">보호소 전화</a><button type="button" data-sh="${esc(a.id)}">공유</button></div>
       <span>보호소 ${esc(a.tel)}</span></div></article>`; }).join('') || `<p style="color:var(--sub)">이 지역에는 지금 보호 중인 아이가 없어요.</p>`;
     $('#amore').hidden = list.length <= shown;
     $('#ainfo').textContent = `${list.length.toLocaleString('ko-KR')}마리 중 ${Math.min(shown, list.length)}마리 · 최근 30일 구조 · ${AD.updated || ''} 기준 · 출처: 국가동물보호정보시스템`;
