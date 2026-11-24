@@ -1,0 +1,101 @@
+{
+  "at": "2026-11-24T07:19:43.015Z",
+  "keyPresent": true,
+  "keyLooksEncoded": true,
+  "results": [
+    {
+      "endpoint": "https://apis.data.go.kr/1543061/abandonmentPublicService_v2/abandonmentPublic_v2",
+      "reencoded": false,
+      "status": 200,
+      "snippet": "{\n  \"response\" : {\n    \"header\" : {\n      \"reqNo\" : 66558203,\n      \"resultCode\" : \"00\",\n      \"resultMsg\" : \"NORMAL SERVICE.\"\n    },\n    \"body\" : {\n      \"items\" : {\n        \"item\" : [ {\n          \"desertionNo\" : \"448539202600353\",\n          \"happenDt\" : \"20261124\",\n          \"happenPlace\" : \"용덕면 미곡마을\",\n          \"kindFullNm\" : \"[개] 믹스견\",\n          \"upKindCd\" : \"417000\",\n          \"upKindNm\" : \"개\",\n          \"kindCd\" : \"000114\",\n          \"kindNm\" : \"믹스견\",\n          \"colorCd\" : \"검정 황갈색&흰색\",\n          \"age\" : \"2026(60일미만)(년생)\",\n          \"weight\" : \"1.0(Kg)\",\n          \"noticeNo\" : \"경남-의령-2026-00183\",\n          \"noticeSdt\" : \"20261124\",\n          \"noticeEdt\" : \"20261207\",\n          \"popfile1\" : \"http://openapi.animal.go.kr/openapi/service/rest/fileDownloadSrvc/files/shelter/2026/11/20261124151186.jpg\",\n          \"popfile2\" : \"http://openapi.animal.go.kr/openapi/service/rest/fileDownloadSrvc/files/shelter/2026/11/202611241511819[1].jpg\",\n          \"processState\" : \"보호중\",\n          \"sexCd\" : \"M\",\n          \"neuterYn\" : \"U\",\n          \"specialMark\" : \"귀쳐짐 순함 검정황갈색흰색피부보유중\",\n          \"careRegNo\" : \"348539201900001\",\n          \"careNm\" : \"의령군 동물보호센터\",\n          \"careTel\" : \"055-570-4203\",\n          \"careAddr\" : \"경상남도 의령군 의령읍 남강로 485-75  \",\n          \"careOwnerNm\" : \"하영효\",\n          \"orgNm\" : \"경상남도 의령군\",\n          \"updTm\" : \"2026-11-24 15:12:02.0\"\n        }, {\n          \"desertionNo\" : \"448539202600352\",\n          \"happenDt\" : \"20261124\",\n          \"happenPlace\" : \"용덕면 미곡마을\",\n     ",
+      "totalCount": 4552,
+      "header": {
+        "reqNo": 66558203,
+        "resultCode": "00",
+        "resultMsg": "NORMAL SERVICE."
+      },
+      "fields": [
+        "desertionNo",
+        "happenDt",
+        "happenPlace",
+        "kindFullNm",
+        "upKindCd",
+        "upKindNm",
+        "kindCd",
+        "kindNm",
+        "colorCd",
+        "age",
+        "weight",
+        "noticeNo",
+        "noticeSdt",
+        "noticeEdt",
+        "popfile1",
+        "popfile2",
+        "processState",
+        "sexCd",
+        "neuterYn",
+        "specialMark",
+        "careRegNo",
+        "careNm",
+        "careTel",
+        "careAddr",
+        "careOwnerNm",
+        "orgNm",
+        "updTm"
+      ],
+      "sample": {
+        "desertionNo": "448539202600353",
+        "happenDt": "20261124",
+        "happenPlace": "용덕면 미곡마을",
+        "kindFullNm": "[개] 믹스견",
+        "upKindCd": "417000",
+        "upKindNm": "개",
+        "kindCd": "000114",
+        "kindNm": "믹스견",
+        "colorCd": "검정 황갈색&흰색",
+        "age": "2026(60일미만)(년생)",
+        "weight": "1.0(Kg)",
+        "noticeNo": "경남-의령-2026-00183",
+        "noticeSdt": "20261124",
+        "noticeEdt": "20261207",
+        "popfile1": "http://openapi.animal.go.kr/openapi/service/rest/fileDownloadSrvc/files/shelter/2026/11/20261124151186.jpg",
+        "popfile2": "http://openapi.animal.go.kr/openapi/service/rest/fileDownloadSrvc/files/shelter/2026/11/202611241511819[1].jpg",
+        "processState": "보호중",
+        "sexCd": "M",
+        "neuterYn": "U",
+        "specialMark": "귀쳐짐 순함 검정황갈색흰색피부보유중",
+        "careRegNo": "348539201900001",
+        "careNm": "의령군 동물보호센터",
+        "careTel": "055-570-4203",
+        "careAddr": "경상남도 의령군 의령읍 남강로 485-75  ",
+        "careOwnerNm": "하영효",
+        "orgNm": "경상남도 의령군",
+        "updTm": "2026-11-24 15:12:02.0"
+      }
+    },
+    {
+      "endpoint": "https://apis.data.go.kr/1543061/abandonmentPublicService_v2/abandonmentPublic_v2",
+      "reencoded": true,
+      "status": 403,
+      "snippet": "{\n  \"OpenAPI_ServiceResponse\": {\n    \"cmmMsgHeader\": {\n      \"errMsg\": \"SERVICE_KEY_IS_NOT_REGISTERED_ERROR\",\n      \"returnAuthMsg\": \"등록되지 않은 서비스키\",\n      \"returnReasonCode\": \"30\"\n    }\n  }\n}\n",
+      "fields": [],
+      "sample": null
+    },
+    {
+      "endpoint": "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic",
+      "reencoded": false,
+      "status": 400,
+      "snippet": "{\n  \"OpenAPI_ServiceResponse\": {\n    \"cmmMsgHeader\": {\n      \"errMsg\": \"NO_OPENAPI_SERVICE_ERROR\",\n      \"returnAuthMsg\": \"해당 오픈API 서비스가 없거나 폐기됨\",\n      \"returnReasonCode\": \"12\"\n    }\n  }\n}\n",
+      "fields": [],
+      "sample": null
+    },
+    {
+      "endpoint": "https://apis.data.go.kr/1543061/abandonmentPublicSrvc/abandonmentPublic",
+      "reencoded": true,
+      "status": 400,
+      "snippet": "{\n  \"OpenAPI_ServiceResponse\": {\n    \"cmmMsgHeader\": {\n      \"errMsg\": \"NO_OPENAPI_SERVICE_ERROR\",\n      \"returnAuthMsg\": \"해당 오픈API 서비스가 없거나 폐기됨\",\n      \"returnReasonCode\": \"12\"\n    }\n  }\n}\n",
+      "fields": [],
+      "sample": null
+    }
+  ]
+}
