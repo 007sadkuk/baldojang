@@ -1,6 +1,7 @@
 // 국가동물보호정보시스템 분실동물 조회 → data/lost.json
 // 신고자 이름·연락처(callName, callTel)와 상세주소(happenAddrDtl)는 개인정보라 저장하지 않음
 import { writeFileSync, mkdirSync } from 'node:fs';
+mkdirSync('data', { recursive: true });
 const KEY = (process.env.ANIMAL_API_KEY || '').trim();
 if (!KEY) { console.error('ANIMAL_API_KEY 없음'); process.exit(1); }
 const BASE = 'https://apis.data.go.kr/1543061/lossInfoService/lossInfo';
@@ -11,6 +12,9 @@ for (let page = 1; page <= 5; page++) {
   const j = await res.json(); const it = j?.response?.body?.items?.item; const a = Array.isArray(it) ? it : it ? [it] : [];
   rows.push(...a); if (a.length < 200) break;
 }
+let total = null;
+const dbg = { rows: rows.length, dates: rows.slice(0, 3).map(r => r.happenDt).concat(rows.slice(-3).map(r => r.happenDt)), kinds: [...new Set(rows.map(r => r.kindCd))].slice(0, 6), withPhoto: rows.filter(r => r.popfile).length, cut };
+writeFileSync('data/lost-debug.json', JSON.stringify(dbg));
 const items = rows.map(a => {
   const kind = String(a.kindCd || ''), addr = String(a.happenAddr || '').trim().split(/\s+/);
   return { sp: /고양이/.test(kind) ? 'cat' : /개/.test(kind) ? 'dog' : 'etc', kind: kind.replace(/^\[[^\]]*\]\s*/, ''), color: a.colorCd || '', sex: a.sexCd || '',
