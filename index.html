@@ -136,6 +136,20 @@ input[type=file]{font:15px 'Pretendard',sans-serif;color:var(--sub)}
 .dtw{position:relative;display:block}.dtw input.dt{padding-right:52px}
 .cal{position:absolute;right:0;bottom:6px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}.cal:hover{background:var(--soft)}
 .dtw input[type=date]{position:absolute;right:0;bottom:6px;width:44px;height:44px;opacity:0;pointer-events:none;border:0;padding:0}
+.adopt{padding:clamp(72px,9vw,120px) 0;background:var(--soft)}
+.adopt .head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px}
+.adopt h2{font-size:clamp(36px,4.6vw,54px)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px}
+.filters select{height:46px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink);padding:0 18px;font:600 15px 'Pretendard',sans-serif}
+.agrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,250px),1fr));gap:14px}
+.acard{background:var(--bg);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+.acard img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:#ddd}
+.acard .in{padding:16px 18px 18px;display:grid;gap:6px;flex:1}
+.acard b{font-size:18px;letter-spacing:-.03em}.acard span{color:var(--sub);font-size:14px;line-height:1.5}
+.acard .tag{display:inline-block;font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;background:var(--soft);color:var(--ink);margin-right:4px}
+.acard .acts2{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.acard .acts2 button,.acard .acts2 a{min-height:40px;padding:0 14px;border-radius:999px;font:700 14px 'Pretendard',sans-serif;border:1px solid var(--sub);background:transparent;color:var(--ink);text-decoration:none;display:inline-flex;align-items:center;cursor:pointer}
+.acard .acts2 .p{background:var(--red);border-color:var(--red);color:#fff}
 footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
 @media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
 </style>
@@ -144,7 +158,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <section class="hero">
 <img src="dog.jpg" alt="녹색 배경지 앞에 앉아 있는 강아지">
 <div class="wrap">
-<nav><span class="logo"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="han">발도장</span></span><div class="links"><a href="#types">열 가지 성향</a><a href="#saju">궁합 보기</a></div></nav>
+<nav><span class="logo"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="han">발도장</span></span><div class="links"><a href="#types">열 가지 성향</a><a href="#waiting">가족을 기다리는 아이들</a><a href="#saju">궁합 보기</a></div></nav>
 <div class="copy">
 <h1>생일 몰라도<br>괜찮아요.</h1>
 <p>우리 가족이 된 날이 이 아이의 사주가 됩니다.<br>입양일 하나로 성향부터 나와의 궁합까지.</p>
@@ -176,6 +190,16 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div style="display:flex;align-items:flex-end;gap:18px"><span class="big">75</span><span style="font-weight:700;font-size:20px;letter-spacing:-.03em;line-height:1.35">보호자와의 궁합<br>보살핌형</span></div>
 </div>
 </section>
+
+<section class="adopt" id="waiting" hidden><div class="wrap">
+<div class="head"><h2>가족을 기다리는<br>아이들.</h2><p style="color:var(--sub);max-width:420px">전국 동물보호센터에서 보호 중인 아이들이에요. 마음에 닿는 아이가 있다면 데려오는 날의 궁합을 미리 봐 보세요.</p></div>
+<div class="filters"><div class="pills" role="radiogroup" aria-label="종류">
+<label class="pill"><input type="radio" name="asp" value="dog" checked><span>강아지</span></label>
+<label class="pill"><input type="radio" name="asp" value="cat"><span>고양이</span></label></div>
+<select id="aregion" aria-label="지역"><option value="">전국</option></select></div>
+<div class="agrid" id="agrid"></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:24px"><button class="btn btn-o btn-s" type="button" id="amore">더 보기</button><p class="note" id="ainfo" style="color:var(--sub)"></p></div>
+</div></section>
 
 <section class="formband" id="saju"><div class="wrap">
 <h2>우리 아이를<br>소개해 주세요.</h2>
@@ -635,6 +659,56 @@ async function drawCard2() {
 }
 $('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2'), '기념일', 'cvimg2'));
 
+
+// ---- 가족을 기다리는 아이들
+{
+  let AD = [], shown = 8;
+  const sexK = s => s === 'M' ? '수컷' : s === 'F' ? '암컷' : '성별 미상';
+  const d8 = s => s && s.length === 8 ? `${s.slice(0,4)}.${s.slice(4,6)}.${s.slice(6)}` : '';
+  const ageK = s => String(s).replace('(년생)', '년생').replace(/\(([^)]*)\)/, ' ($1)');
+  const view = () => {
+    const sp = document.querySelector('input[name=asp]:checked').value, rg = $('#aregion').value;
+    const list = AD.filter(a => a.sp === sp && (!rg || a.region === rg));
+    const tdy = (() => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`; })();
+    $('#agrid').innerHTML = list.slice(0, shown).map(a => {
+      const notice = a.ne && a.ne >= tdy ? `<span class="tag">공고 중 ~${esc(d8(a.ne).slice(5))}</span>` : `<span class="tag">공고 기간 끝남</span>`;
+      return `<article class="acard"><img src="${esc(a.photo)}" alt="${esc(a.kind)} ${esc(sexK(a.sex))}" loading="lazy" referrerpolicy="no-referrer" onerror="this.closest('.acard').remove()">
+      <div class="in"><b>${esc(a.kind)} · ${esc(sexK(a.sex))}</b><span>${esc(ageK(a.age))} · ${esc(a.weight)}</span><span>${esc(a.care)} (${esc(a.org)})</span><div>${notice}</div>
+      ${a.mark ? `<span>${esc(a.mark)}</span>` : ''}
+      <div class="acts2"><button type="button" class="p" data-cp="${esc(a.id)}">데려오는 날 궁합</button><button type="button" data-sh="${esc(a.id)}">공유</button></div>
+      <span>보호소 ${esc(a.tel)}</span></div></article>`; }).join('') || `<p style="color:var(--sub)">이 지역에는 지금 보호 중인 아이가 없어요.</p>`;
+    $('#amore').hidden = list.length <= shown;
+    $('#ainfo').textContent = `${list.length.toLocaleString('ko-KR')}마리 중 ${Math.min(shown, list.length)}마리 · 최근 30일 구조 · ${AD.updated || ''} 기준 · 출처: 국가동물보호정보시스템`;
+  };
+  document.querySelectorAll('input[name=asp]').forEach(r => r.addEventListener('change', () => { shown = 8; view(); }));
+  $('#aregion').addEventListener('change', () => { shown = 8; view(); });
+  $('#amore').addEventListener('click', () => { shown += 8; view(); });
+  $('#agrid').addEventListener('click', async e => {
+    const cp = e.target.closest('[data-cp]'), sh = e.target.closest('[data-sh]');
+    const a = AD.find(x => x.id === (cp || sh || {}).dataset?.[cp ? 'cp' : 'sh']); if (!a) return;
+    if (cp) {
+      const d = new Date();
+      $('#name').value = a.kind.length <= 6 ? `${a.kind}` : '이 아이';
+      const ad = $('#adopt'); ad.value = pad([d.getFullYear(), d.getMonth()+1, d.getDate()]);
+      const r = document.querySelector(`input[name=kind][value=${a.sp}]`); if (r) r.checked = true;
+      $('#err').textContent = '데려오는 날을 오늘로 넣었어요. 실제로 데려올 날짜로 바꿔 보세요.';
+      $('#saju').scrollIntoView({ behavior: 'smooth' });
+    } else {
+      const text = `${a.care}에서 가족을 기다리는 ${a.kind} (${sexK(a.sex)}, ${ageK(a.age)}) · 보호소 ${a.tel}`;
+      const url = location.href.split('#')[0] + '#waiting';
+      try { if (navigator.share) { await navigator.share({ title: '가족을 기다리는 아이', text, url }); return; } } catch (er) { if (er && er.name === 'AbortError') return; }
+      try { await navigator.clipboard.writeText(`${text}\n${url}`); sh.textContent = '복사됨'; setTimeout(() => sh.textContent = '공유', 1500); } catch (er) { sh.textContent = '복사 안 됨'; }
+    }
+  });
+  fetch('data/adopt.json', { cache: 'no-store' }).then(r => r.ok ? r.json() : null).then(j => {
+    if (!j || !j.items || !j.items.length) return;
+    AD = j.items; AD.updated = j.updated;
+    for (let i = AD.length - 1; i > 0; i--) { const k = Math.floor(Math.random() * (i + 1)); [AD[i], AD[k]] = [AD[k], AD[i]]; }
+    const regions = [...new Set(AD.map(a => a.region).filter(Boolean))].sort();
+    $('#aregion').insertAdjacentHTML('beforeend', regions.map(r => `<option value="${esc(r)}">${esc(r)}</option>`).join(''));
+    $('#waiting').hidden = false; view();
+  }).catch(() => {});
+}
 document.querySelectorAll('[data-fb]').forEach(btn => btn.addEventListener('click', () => {
   $('#fbmsg').textContent = btn.dataset.fb === '1' ? '역시! 가족이 된 날이 괜히 특별한 게 아니죠.' : '그럴 수 있어요. 사주는 기운의 방향일 뿐, 진짜 성격은 함께한 시간이 만들어요.';
 }));
