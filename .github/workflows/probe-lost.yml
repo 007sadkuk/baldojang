@@ -1,0 +1,18 @@
+name: 분실동물 API 주소 확인
+on:
+  push:
+    paths: ['.github/workflows/probe-lost.yml', 'scripts/probe-lost.mjs']
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: |
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          node scripts/probe-lost.mjs >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+        env:
+          ANIMAL_API_KEY: ${{ secrets.ANIMAL_API_KEY }}
