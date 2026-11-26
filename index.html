@@ -165,6 +165,14 @@ body.sub{padding-top:65px}
 @media(max-width:600px){.topbar .links{gap:14px;font-size:14px}}
 .logo .lt{display:flex;flex-direction:column;line-height:1.05}.logo .lt small{font:600 11px 'Pretendard',sans-serif;letter-spacing:0;opacity:.75;margin-top:3px}
 input.tm{height:56px;font:600 18px 'Pretendard',sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid light-dark(#cfcac2,#3a3a3a);padding:0 16px;border-radius:12px;width:100%;max-width:260px}input.tm:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px light-dark(rgba(196,42,30,.15),rgba(196,42,30,.3))}
+.walkband{background:var(--bg);border-bottom:1px solid var(--soft)}.walkband .wrap{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;justify-content:space-between;padding-top:22px;padding-bottom:22px}
+.walkband b{font-size:19px;letter-spacing:-.03em}.walkband span{color:var(--sub);font-size:15px}
+.stars{color:var(--red);letter-spacing:2px;font-size:20px}
+.vsban{background:var(--bg);border:2px solid var(--red);border-radius:12px;padding:16px 18px;font-size:16px;line-height:1.6}
+.vsres{padding:clamp(40px,5vw,64px) 0;background:var(--soft)}.vsres .box{background:var(--bg)}
+.coupon{padding:0 0 clamp(56px,7vw,96px)}.coupon a{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;background:#141414;color:#fff;border-radius:14px;padding:26px 28px;text-decoration:none}
+.coupon b{font-size:clamp(20px,2.4vw,26px);letter-spacing:-.03em}.coupon span{color:#cfcfcf;font-size:15px}.coupon u{text-decoration:none;background:var(--red);border-radius:999px;padding:12px 22px;font-weight:700;white-space:nowrap}
+.idf{display:grid;gap:14px;max-width:560px}.idf input{height:50px}
 footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
 @media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
 </style>
@@ -182,6 +190,8 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 </div>
 </div>
 </section>
+
+<section class="walkband" id="walkhome" data-off="1" hidden><div class="wrap"><div style="display:grid;gap:4px"><b id="whTitle"></b><span id="whSub"></span></div><button class="btn btn-r btn-s" type="button" id="whGo">결과 다시 보기</button></div></section>
 
 <section class="how"><div class="wrap">
 <h2>가족이 된 날이<br>이 아이의<br>사주가 됩니다.</h2>
@@ -230,6 +240,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <section class="formband" id="saju"><div class="wrap">
 <h2>우리 아이를<br>소개해 주세요.</h2>
 <form id="f" novalidate>
+<div class="vsban" id="vsban" hidden></div>
 <div class="f"><label for="name">이름</label><input type="text" id="name" maxlength="12" autocomplete="off" placeholder="예: 나비"></div>
 <div class="f"><span class="lab">종류</span><div class="pills" role="radiogroup" aria-label="종류">
 <label class="pill"><input type="radio" name="kind" value="dog" checked><span>강아지</span></label>
@@ -258,6 +269,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <p class="note" id="rnote"></p>
 </div></section>
 
+<section class="vsres" id="vsres" hidden><div class="wrap"><div class="sec"><h3>궁합 대결 결과</h3><div class="body" id="vsbody"></div></div></div></section>
 <section class="report"><div class="wrap">
 <div class="sec"><h3>이런 아이예요</h3><div class="body" id="rabout"></div></div>
 <div class="sec"><h3>알아두면 좋아요</h3><div class="three" id="rlists"></div></div>
@@ -275,6 +287,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 </div></section>
 
 <section class="more" id="more"><div class="wrap">
+<div class="sec"><h3 id="walktitle">오늘의 산책운</h3><div class="body" id="walkbody"></div></div>
 <div class="sec"><h3>발도장<br>퍼스널 컬러</h3><div class="body" id="pcbody" style="max-width:820px"></div></div>
 <div class="sec"><h3 id="ytitle">올해의 운세</h3><div class="body" id="ybody"></div></div>
 <div class="sec"><h3>함께한 시간</h3><div class="anv"><div style="display:grid;gap:18px"><div class="stat" id="astat"></div><p class="note" style="color:var(--sub)" id="anote">가족이 된 날을 1일째로 세요.</p><div class="acts"><button class="btn btn-r btn-s" type="button" id="save2">기념일 카드 저장</button></div><p class="note" id="savemsg2"></p></div><canvas id="cv2" width="1080" height="1350" aria-label="입양 기념일 카드 미리보기"></canvas></div></div>
@@ -291,11 +304,21 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div class="sec"><h3>기운을 채우는 별명</h3><div class="body" id="nickbody"></div></div>
 </div></section>
 
+<section class="more" id="idcard"><div class="wrap"><div class="sec"><h3>실종 대비<br>신분증 카드</h3><div class="body">
+<p>혹시 모를 날을 위해 미리 만들어 두세요. 잃어버리면 바로 공유할 수 있는 전단 이미지예요. 위에서 올린 사진이 들어가요.</p>
+<div class="idf"><div class="f"><label for="idBreed">품종</label><input type="text" id="idBreed" maxlength="20" placeholder="예: 말티즈, 믹스견"></div>
+<div class="f"><label for="idMark">특징</label><input type="text" id="idMark" maxlength="40" placeholder="예: 왼쪽 귀 갈색, 빨간 목줄, 겁이 많음"></div>
+<div class="f"><label for="idTel">연락처</label><input type="text" id="idTel" maxlength="20" inputmode="tel" placeholder="예: 010-1234-5678"><span class="hint">연락처는 카드 이미지에만 들어가고, 어디에도 저장·전송되지 않아요.</span></div>
+<div class="acts"><button class="btn btn-r btn-s" type="button" id="idMake">카드 만들기</button><button class="btn btn-o btn-s" type="button" id="idSave" hidden>카드 저장</button></div>
+<p class="note" id="idmsg"></p></div>
+<canvas id="cv3" width="1080" height="1350" aria-label="실종 대비 카드 미리보기" hidden style="width:100%;max-width:360px;border-radius:8px"></canvas>
+</div></div></div></section>
+
 <section class="share"><div class="wrap">
 <canvas id="cv" width="1080" height="1350" aria-label="공유 카드 미리보기"></canvas>
 <div style="display:grid;gap:22px">
 <h3 style="font-size:clamp(30px,3.6vw,42px)">발도장 쾅,<br>결과를 자랑해 보세요.</h3>
-<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-r" type="button" id="shareRes">결과 공유하기</button><button class="btn btn-o" type="button" id="save">카드 저장</button><a class="btn btn-o" href="#saju">다른 아이도 보기</a></div>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-r" type="button" id="shareRes">결과 공유하기</button><button class="btn btn-o" type="button" id="save">카드 저장</button><button class="btn btn-o" type="button" id="vsShare">친구 아이와 궁합 대결</button><a class="btn btn-o" href="#saju">다른 아이도 보기</a></div>
 <p class="note" id="savemsg"></p>
 <div style="display:grid;gap:10px;margin-top:8px"><b style="font-size:17px">이 결과, 우리 아이랑 맞나요?</b><div class="fb"><button type="button" data-fb="1">맞아요</button><button type="button" data-fb="0">글쎄요</button></div><p class="note" id="fbmsg"></p></div>
 </div>
@@ -306,6 +329,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <p class="ad">아래 링크는 쿠팡 상품 검색으로 연결돼요. 제휴·광고 링크가 아니며, 발도장은 구매에 따른 수수료를 받지 않아요.</p>
 <div class="goods" id="goods"></div></div></div>
 </div></section>
+<section class="coupon" id="coupon" hidden><div class="wrap"><a id="couponLink" href="#" target="_blank" rel="noopener"><div style="display:grid;gap:6px"><b id="couponTitle"></b><span id="couponSub"></span></div><u>쿠폰 받으러 가기 →</u></a></div></section>
 </div>
 
 <footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="lt"><span class="han">발도장</span><small>with 시우미</small></span></span><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 사주를 보면 아이 이름, 종류, 가족이 된 날, 결과(성향·점수)가 서비스 개선을 위해 저장돼요. 보호자·가족 생년월일과 사진은 저장하지 않아요. 방문 기록은 본 화면, 들어온 곳, 기기 종류만 남아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
@@ -533,7 +557,7 @@ function render(name, kind, a, b, o, tm) {
   const pet = SAJU.chart(...m, ...(tm || [])), own = o ? SAJU.chart(...o) : null, cp = own ? SAJU.compat(pet, own, { o: '보호자', p: name }) : null;
   const st = pet.dayStem, ei = SAJU.STEM_EL[st], el = EL[ei], ty = TYPES[st], nm = name;
   const dayWord = sameDay ? '우리 집에서 태어난' : mode === 'family' ? '가족이 된' : '태어난';
-  last = {name, a: m, mode, dayWord, cp, st, el, ty};
+  last = {name, a: m, kind, mode, dayWord, cp, st, el, ty};
   resultShown = true; $('#result').hidden = false;
   logEvent({ t: 'saju', kind: kind === 'cat' ? '고양이' : '강아지', name, adopt: [a ? '가족 ' + pad(a) : '', b ? '생일 ' + pad(b) : ''].filter(Boolean).join(' / ') + (tm ? ` ${String(tm[0]).padStart(2,'0')}:${String(tm[1]).padStart(2,'0')}` : ''), born: sameDay, ptype: ty.name, score: cp ? cp.score : '궁합 안 봄' });
   const ph = $('#rphoto'); ph.style.background = el.bg; ph.style.color = el.fg;
@@ -582,6 +606,7 @@ function render(name, kind, a, b, o, tm) {
   last.pet = pet; last.own = own;
   renderMore(nm, m, pet, mode);
   renderColor(nm, pet, kind);
+  renderExtra(nm, pet, kind, el);
   drawCard(); drawCard2();
   $('#result').scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
 }
@@ -824,7 +849,7 @@ function logView(page) {
 var resultShown = false;
 function route() {
   const h = decodeURIComponent(location.hash.slice(1)), sub = h === 'waiting' || h === 'lost';
-  document.querySelectorAll('body > section:not(#waiting):not(#lost)').forEach(e => { e.hidden = sub; });
+  document.querySelectorAll('body > section:not(#waiting):not(#lost)').forEach(e => { e.hidden = sub || e.dataset.off === '1'; });
   $('#result').hidden = sub || !resultShown;
   $('#waiting').hidden = h !== 'waiting'; $('#lost').hidden = h !== 'lost'; document.body.classList.toggle('sub', sub); topCheck();
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('on', a.dataset.nav === h));
@@ -916,6 +941,102 @@ $('#shareRes').addEventListener('click', () => {
     catch (e) { msg.textContent = `이 주소를 복사해 공유해 주세요: ${url}`; }
   }, 'image/png');
 });
+
+// ---- 시우미 쿠폰 (주소가 정해지면 url만 채우면 배너가 보여요)
+const SIUME_COUPON = { url: '', title: '발도장 친구 전용 · 시우미 킁킁세제 할인', sub: '반려동물과 함께 사는 집을 위한 세제, 발도장 이용자에게만 드려요.' };
+// ---- 오늘의 산책운
+const WALK = {
+  help: { s: 5, t: '기운을 듬뿍 받는 날', d: '오늘의 기운이 {n}의 기운을 북돋아요. 컨디션 좋고 기분도 좋은 날, 평소보다 조금 길게 걸어도 좋아요.' },
+  same: { s: 4, t: '친구 만나기 좋은 날', d: '오늘은 {n}와 같은 기운이 흐르는 날이에요. 동네 친구를 만나기 좋은 날, 새로운 산책 메이트를 찾아보세요.' },
+  win:  { s: 4, t: '내가 주인공인 날', d: '{n}가 오늘의 기운을 이끄는 날이에요. 자신감이 넘치니 새로운 코스나 개인기 연습에 딱이에요.' },
+  out:  { s: 3, t: '에너지 쓰는 날', d: '{n}의 기운이 밖으로 쏟아지는 날이에요. 신나게 뛰고 나면 푹 쉬게 해 주세요.' },
+  test: { s: 2, t: '조심조심 쉬어가는 날', d: '오늘은 {n}가 조금 예민할 수 있는 날이에요. 익숙한 코스를 천천히, 낯선 곳은 다음에 가요.' } };
+function walkFor(pet, name) {
+  const td = SAJU.chart(...todayP()), te = SAJU.STEM_EL[td.dayStem], pe = SAJU.STEM_EL[pet.dayStem];
+  const k = te === pe ? 'same' : (te + 1) % 5 === pe ? 'help' : (pe + 1) % 5 === te ? 'out' : (te + 2) % 5 === pe ? 'test' : 'win';
+  const br = brRel(td.dayBr, pet.dayBr); let s = WALK[k].s + (br === 'hap' ? 1 : br === 'chung' ? -1 : 0); s = Math.max(1, Math.min(5, s));
+  const sup = (pe + 4) % 5, P = PAL[sup];
+  const subj = name + jo(name, '이', '가'), nm2 = name + jo(name, '과', '와');
+  return { s, k, title: WALK[k].t, desc: WALK[k].d.replace('{n}의', name + '의').replace('{n}와', nm2).replace('{n}가', subj),
+    dir: P.dir, time: P.time, color: P.sw[1][0], day: SAJU.han(td.pillars[2]), br };
+}
+const starStr = s => '★'.repeat(s) + '☆'.repeat(5 - s);
+function renderExtra(nm, pet, kind, el) {
+  const w = walkFor(pet, nm);
+  $('#walktitle').innerHTML = `오늘의 산책운<br><span class="stars">${starStr(w.s)}</span>`;
+  $('#walkbody').innerHTML = `<p><b>${esc(w.title)}</b> · 오늘은 <span class="han">${w.day}</span>일<br>${esc(w.desc)}${w.br === 'chung' ? ' 오늘은 생활 리듬이 엇갈리기 쉬우니 평소 루틴을 지켜 주세요.' : w.br === 'hap' ? ' 오늘은 생활 리듬도 착착 맞는 날이에요.' : ''}</p>
+  <div class="three"><div class="box"><h4>${/쪽$/.test(w.dir)?'행운의 방향':'추천 코스'}</h4><p style="font-size:16px">${esc(w.dir)}</p></div><div class="box"><h4>추천 시간</h4><p style="font-size:16px">${esc(w.time)}</p></div><div class="box"><h4>행운의 색</h4><p style="font-size:16px">${esc(w.color)}</p></div></div>
+  <p class="note" style="color:var(--sub)">매일 바뀌어요. 내일 다시 들어오면 홈 화면 위쪽에서 바로 볼 수 있어요.</p>`;
+  // 궁합 대결 결과
+  if (VS) {
+    const oc = SAJU.chart(...VS.d), cv = SAJU.compat(pet, oc, { o: VS.n, p: nm });
+    const lab = { hap: '찰떡 운명', care: `${VS.n}${jo(VS.n,'이','가')} 챙겨주는 사이`, heal: `${nm}${jo(nm,'이','가')} 챙겨주는 사이`, twin: '쌍둥이 같은 사이', spark: '티격태격 라이벌' }[cv.type];
+    $('#vsbody').innerHTML = `<div class="box"><div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px"><div><h4>${esc(nm)} × ${esc(VS.n)}</h4><span style="color:var(--sub);font-size:15px">${esc(VS.n)}${jo(VS.n,'은','는')} ${SAJU.STEMS[oc.dayStem]} ${esc(TYPES[oc.dayStem].name)}</span></div><span style="font-size:44px;font-weight:800;letter-spacing:-.05em">${cv.score}</span></div>
+      <p class="headline" style="font-size:22px">${esc(lab)}</p><ul>${cv.reasons.map(r => `<li>${esc(r[1])}</li>`).join('')}</ul></div>
+      <p class="note" style="color:var(--sub)">${esc(VS.n)} 보호자에게도 이 결과를 공유해 보세요. 아래 「친구 아이와 궁합 대결」 버튼으로 우리 아이 대결 링크도 만들 수 있어요.</p>`;
+    $('#vsres').hidden = false;
+    logEvent({ t: 'view', page: '궁합 대결 완료', ref: '사이트 안 이동', device: DEVICE });
+  } else $('#vsres').hidden = true;
+  $('#idmsg').textContent = ''; $('#cv3').hidden = true; $('#idSave').hidden = true;
+  const ci = $('#cvimg3'); if (ci) ci.remove();
+  if (SIUME_COUPON.url) { $('#couponLink').href = SIUME_COUPON.url; $('#couponTitle').textContent = SIUME_COUPON.title; $('#couponSub').textContent = SIUME_COUPON.sub; $('#coupon').hidden = false; }
+}
+// ---- 궁합 대결 링크 읽기
+let VS = null;
+try {
+  const q = new URLSearchParams(location.search).get('vs');
+  if (q) { const [n, k, d] = q.split('~'); const p = parse(d || ''); if (n && p) VS = { n: n.slice(0, 12), k: k === 'cat' ? 'cat' : 'dog', d: p }; }
+} catch (e) { VS = null; }
+if (VS) {
+  $('#vsban').innerHTML = `🐾 <b>${esc(VS.n)}</b>(${VS.k === 'cat' ? '고양이' : '강아지'}) 보호자가 궁합 대결을 신청했어요! 우리 아이 날짜를 넣고 사주를 보면 <b>${esc(VS.n)}</b>${jo(VS.n,'과','와')}의 궁합이 함께 나와요.`;
+  $('#vsban').hidden = false;
+  logEvent({ t: 'view', page: '궁합 대결 링크로 들어옴', ref: '친구 공유', device: DEVICE });
+}
+$('#vsShare').addEventListener('click', async () => {
+  if (!last) return; const b = $('#vsShare'), nm = last.name;
+  const url = `${location.origin}${location.pathname}?vs=${encodeURIComponent([nm, last.kind || 'dog', pad(last.a).replace(/\./g, '')].join('~'))}`;
+  const text = `우리 ${nm}${jo(nm,'이랑','랑')} 너희 아이 궁합 볼래? 🐾 날짜만 넣으면 돼`;
+  logEvent({ t: 'view', page: '궁합 대결 링크 공유', ref: '사이트 안 이동', device: DEVICE });
+  try { if (navigator.share) { await navigator.share({ title: '발도장 궁합 대결', text, url }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  try { await navigator.clipboard.writeText(`${text}\n${url}`); b.textContent = '링크 복사됨!'; setTimeout(() => b.textContent = '친구 아이와 궁합 대결', 1800); } catch (e) { $('#savemsg').textContent = `이 주소를 친구에게 보내 주세요: ${url}`; }
+});
+// ---- 실종 대비 신분증 카드
+$('#idMake').addEventListener('click', async () => {
+  if (!last) return; const c = $('#cv3'), x = c.getContext('2d'); if (!x) return;
+  const F = 'Pretendard, sans-serif', nm = last.name, breed = $('#idBreed').value.trim(), mark = $('#idMark').value.trim(), tel = $('#idTel').value.trim();
+  try { await document.fonts.load('800 100px Pretendard'); } catch (e) {}
+  x.fillStyle = '#FFFFFF'; x.fillRect(0, 0, 1080, 1350);
+  x.fillStyle = '#C42A1E'; x.fillRect(0, 0, 1080, 190);
+  x.fillStyle = '#FFFFFF'; x.textAlign = 'center'; x.textBaseline = 'middle'; x.font = `800 96px ${F}`; x.fillText('집을 찾고 있어요', 540, 98);
+  const PX = 90, PY = 230, PW = 900, PH = 620;
+  if (photoURL) { try { const im = await loadImg(photoURL); const s = Math.max(PW / im.width, PH / im.height), w = im.width * s, h = im.height * s; x.save(); x.beginPath(); x.rect(PX, PY, PW, PH); x.clip(); x.drawImage(im, PX + (PW - w) / 2, PY + (PH - h) / 2, w, h); x.restore(); } catch (e) {} }
+  else { x.fillStyle = last.el.bg; x.fillRect(PX, PY, PW, PH); x.fillStyle = last.el.fg; x.font = '900 300px "Noto Sans KR"'; x.fillText(SAJU.STEMS[last.st], 540, PY + PH / 2); }
+  x.fillStyle = '#141414'; x.textAlign = 'left'; x.textBaseline = 'top';
+  x.font = `800 84px ${F}`; x.fillText(nm, PX, 890);
+  x.font = `600 40px ${F}`; x.fillStyle = '#444444'; x.fillText([breed, last.kind === 'cat' ? '고양이' : '강아지'].filter(Boolean).join(' · '), PX, 995);
+  if (mark) { x.font = `500 36px ${F}`; let line = mark; while (x.measureText(line).width > PW && line.length > 4) line = line.slice(0, -1); x.fillText(line + (line.length < mark.length ? '…' : ''), PX, 1055); }
+  x.fillStyle = '#141414'; x.fillRect(0, 1150, 1080, 200);
+  x.fillStyle = '#FFFFFF'; x.font = `600 32px ${F}`; x.fillText('보셨다면 연락 주세요', PX, 1180);
+  x.font = `800 64px ${F}`; x.fillText(tel || '연락처를 적어 주세요', PX, 1228);
+  x.textAlign = 'right'; x.font = `600 24px ${F}`; x.fillStyle = '#BBBBBB'; x.fillText('발도장 · baldojang.siume.co.kr', 990, 1300);
+  c.hidden = false; $('#idSave').hidden = false;
+  $('#idmsg').textContent = tel ? '카드가 만들어졌어요. 저장해 두고, 잃어버리면 바로 공유하세요.' : '연락처를 넣으면 카드에 함께 들어가요.';
+  logEvent({ t: 'view', page: '실종 대비 카드 생성', ref: '사이트 안 이동', device: DEVICE });
+});
+$('#idSave').addEventListener('click', () => saveCanvas($('#cv3'), $('#idmsg'), '실종대비', 'cvimg3'));
+// ---- 홈: 오늘의 산책운 띠 (예전에 본 아이가 있으면)
+try {
+  const s = JSON.parse(localStorage.getItem('baldojang-form') || '{}'), p = parse(s.adopt || '');
+  if (p) {
+    const tv = /^(\d{1,2}):(\d{2})/.exec(s.time || ''), pc = SAJU.chart(...p, ...(tv ? [+tv[1], +tv[2]] : []));
+    const nm = s.name || '우리 아이', w = walkFor(pc, nm), wh = $('#walkhome');
+    $('#whTitle').innerHTML = `오늘 ${esc(nm)}의 산책운 <span class="stars">${starStr(w.s)}</span>`;
+    $('#whSub').textContent = `${w.title} · ${/쪽$/.test(w.dir)?'행운의 방향':'추천 코스'} ${w.dir} · 추천 시간 ${w.time}`;
+    wh.dataset.off = '0'; wh.hidden = !!document.body.classList.contains('sub');
+    $('#whGo').addEventListener('click', () => { $('#f').requestSubmit ? $('#f').requestSubmit() : $('#f').dispatchEvent(new Event('submit', { cancelable: true })); });
+  }
+} catch (e) {}
+
 $('#save').addEventListener('click', () => saveCanvas($('#cv'), $('#savemsg'), '궁합', 'cvimg'));
 }
 </script>
