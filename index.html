@@ -164,6 +164,7 @@ body.sub{padding-top:65px}
 .topbar .links{display:flex;gap:22px;font-weight:600;font-size:15px;flex-wrap:wrap}.topbar .links a{text-decoration:none;color:var(--sub)}.topbar .links a.on{color:var(--ink)}
 @media(max-width:600px){.topbar .links{gap:14px;font-size:14px}}
 .logo .lt{display:flex;flex-direction:column;line-height:1.05}.logo .lt small{font:600 11px 'Pretendard',sans-serif;letter-spacing:0;opacity:.75;margin-top:3px}
+input.tm{height:56px;font:600 18px 'Pretendard',sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid light-dark(#cfcac2,#3a3a3a);padding:0 16px;border-radius:12px;width:100%;max-width:260px}input.tm:focus{outline:none;border-color:var(--red);box-shadow:0 0 0 3px light-dark(rgba(196,42,30,.15),rgba(196,42,30,.3))}
 footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
 @media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
 </style>
@@ -233,9 +234,11 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div class="f"><span class="lab">종류</span><div class="pills" role="radiogroup" aria-label="종류">
 <label class="pill"><input type="radio" name="kind" value="dog" checked><span>강아지</span></label>
 <label class="pill"><input type="radio" name="kind" value="cat"><span>고양이</span></label></div></div>
-<div class="f"><label for="adopt">우리 가족이 된 날 <span style="font-weight:400;color:var(--sub)">(입양일·처음 만난 날)</span></label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><span class="hint"><b>가족이 된 날과 생일 중 하나만 알아도 돼요.</b> 둘 다 알면 둘 다 넣어 주세요. 숫자만 쭉 입력하거나(예: 20230503) 옆 달력 버튼으로 고르세요.</span>
-</div>
-<div class="f" id="birthf"><label for="birth">생일 <span style="font-weight:400;color:var(--sub)">(태어난 날)</span></label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><span class="hint">우리 집에서 태어났다면 생일만 넣거나, 두 칸에 같은 날짜를 넣어 주세요.</span></div>
+<div class="f"><label for="adopt">우리 가족이 된 날 <span style="font-weight:400;color:var(--sub)">(입양일 또는 생일)</span></label>
+<div class="pills" role="radiogroup" aria-label="날짜 종류"><label class="pill"><input type="radio" name="dtype" value="adopt" checked><span>입양일</span></label><label class="pill"><input type="radio" name="dtype" value="birth"><span>생일</span></label></div>
+<input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><span class="hint">숫자만 쭉 입력하거나(예: 20230503) 옆 달력 버튼으로 고르세요. 입양일을 정확히 모르면 처음 만난 날을 넣어도 돼요.</span></div>
+<div class="f"><label for="btime" id="tlabel">데려온 시간 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="time" id="btime" class="tm"><span class="hint">알면 시주까지 <b>네 기둥</b>으로 더 자세히 풀어요. 몰라도 괜찮아요.</span></div>
+<div class="f" id="birthf"><label for="birth">생일도 아시나요? <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><span class="hint">알면 '태어난 날로 보면' 타고난 기질을 따로 보여드려요. 우리 집에서 태어났다면 위에서 '생일'을 고르세요.</span></div>
 <div class="f"><label for="photo">아이 사진 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="file" id="photo" accept="image/*"><span class="hint">사진은 이 화면 안에서만 쓰이고 어디에도 올라가지 않아요.</span></div>
 <div class="f"><label for="owner">보호자 생년월일 <span style="font-weight:400;color:var(--sub)">(선택 · 넣으면 궁합이 나와요)</span></label><input type="text" id="owner" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="1990.03.15"><span class="hint">궁합을 보려면 넣어 주세요. 음력 생일이라면 양력으로 바꿔 넣어 주세요.</span></div>
 <p class="err" id="err" role="alert"></p>
@@ -329,18 +332,21 @@ const mod = (a, n) => ((a % n) + n) % n;
 const jo = (w, a, b) => { const c = String(w).charCodeAt(String(w).length - 1); return (c >= 0xAC00 && c <= 0xD7A3 && (c - 0xAC00) % 28) ? a : b; };
 const E = e => `${EL_KO[e]}(${EL_HAN[e]})`;
 const EJ = (e, a, b) => E(e) + jo(EL_KO[e], a, b);
-function chart(y, m, d) {
+function chart(y, m, d, hh, mm) {
+  const hasT = Number.isFinite(hh), tH = hasT ? hh + (mm || 0) / 60 : 12;
   const a = monthIdx(sunLon(jdKST(y, m, d, 0))), b = monthIdx(sunLon(jdKST(y, m, d, 24)));
-  const mi = monthIdx(sunLon(jdKST(y, m, d, 12)));
+  const mi = monthIdx(sunLon(jdKST(y, m, d, tH)));
   const sy = (m <= 2 && mi >= 10) ? y - 1 : y;
   const ys = mod(sy - 4, 10), yb = mod(sy - 4, 12);
   const ms = mod((ys % 5) * 2 + 2 + mi, 10), mb = mod(mi + 2, 12);
   const jdn = Date.UTC(y, m - 1, d) / 86400000 + 2440588;
   const di = mod(jdn + 49, 60);
   const pillars = [[ys, yb], [ms, mb], [di % 10, di % 12]];
+  let hour = null;
+  if (hasT) { const t = hh * 60 + (mm || 0), hb = Math.floor(mod(t - 1410, 1440) / 120); hour = [mod((di % 10) % 5 * 2 + hb, 10), hb]; pillars.push(hour); }
   const counts = [0,0,0,0,0];
   for (const [s, br] of pillars) { counts[STEM_EL[s]]++; counts[BR_EL[br]]++; }
-  return { pillars, counts, boundary: a !== b, dayStem: di % 10, dayBr: di % 12 };
+  return { pillars, counts, boundary: a !== b && !hasT, hasTime: hasT, dayStem: di % 10, dayBr: di % 12 };
 }
 const han = p => STEMS[p[0]] + BRS[p[1]];
 const ko = p => STEM_KO[p[0]] + BR_KO[p[1]];
@@ -507,28 +513,29 @@ $('#f').addEventListener('submit', e => {
   e.preventDefault();
   const name = $('#name').value.trim() || '우리 아이';
   const kind = document.querySelector('input[name=kind]:checked').value;
-  const a = parse($('#adopt').value), b = parse($('#birth').value), o = parse($('#owner').value);
+  const dtype = document.querySelector('input[name=dtype]:checked').value, mainV = parse($('#adopt').value);
+  const a = dtype === 'adopt' ? mainV : null, b = dtype === 'birth' ? mainV : parse($('#birth').value), o = parse($('#owner').value);
+  const tv = /^(\d{1,2}):(\d{2})/.exec($('#btime').value || ''), tm = tv ? [+tv[1], +tv[2]] : null;
   const err = $('#err');
   const bad = (id, msg) => { err.textContent = msg; $('#'+id).focus(); };
-  if ($('#adopt').value.trim() && !a) return bad('adopt', '가족이 된 날을 다시 확인해 주세요. (예: 2023.05.03)');
-  if ($('#birth').value.trim() && !b) return bad('birth', '생일을 다시 확인해 주세요. (예: 2021.03.12)');
-  if (!a && !b) return bad('adopt', '가족이 된 날이나 생일 중 하나는 넣어 주세요.');
+  if (!mainV) return bad('adopt', $('#adopt').value.trim() ? '날짜를 다시 확인해 주세요. (예: 2023.05.03)' : (dtype === 'birth' ? '생일을 넣어 주세요.' : '가족이 된 날을 넣어 주세요.'));
+  if (dtype === 'adopt' && $('#birth').value.trim() && !b) return bad('birth', '생일을 다시 확인해 주세요. 모르면 비워 두셔도 돼요.');
   if ($('#owner').value.trim() && !o) return bad('owner', '보호자 생년월일을 다시 확인해 주세요. (예: 1990.03.15)');
   for (const [p, id, lo] of [[a,'adopt',1950],[b,'birth',1950],[o,'owner',1920]]) { if (!p) continue; if (num(p) > tnum) return bad(id, '미래 날짜는 넣을 수 없어요.'); if (p[0] < lo) return bad(id, `${lo}년 이후 날짜만 계산할 수 있어요.`); }
   if (a && b && num(b) > num(a)) return bad('birth', '생일이 가족이 된 날보다 늦어요. 날짜를 확인해 주세요.');
   err.textContent = '';
-  try { localStorage.setItem('baldojang-form', JSON.stringify({name:$('#name').value.trim(),kind,adopt:$('#adopt').value,birth:$('#birth').value,owner:$('#owner').value})); } catch(e) {}
-  render(name, kind, a, b, o);
+  try { localStorage.setItem('baldojang-form', JSON.stringify({dtype,time:$('#btime').value,name:$('#name').value.trim(),kind,adopt:$('#adopt').value,birth:$('#birth').value,owner:$('#owner').value})); } catch(e) {}
+  render(name, kind, a, b, o, tm);
 });
 
-function render(name, kind, a, b, o) {
+function render(name, kind, a, b, o, tm) {
   const m = a || b, mode = a ? 'family' : 'birth', sameDay = !!(a && b && num(a) === num(b));
-  const pet = SAJU.chart(...m), own = o ? SAJU.chart(...o) : null, cp = own ? SAJU.compat(pet, own, { o: '보호자', p: name }) : null;
+  const pet = SAJU.chart(...m, ...(tm || [])), own = o ? SAJU.chart(...o) : null, cp = own ? SAJU.compat(pet, own, { o: '보호자', p: name }) : null;
   const st = pet.dayStem, ei = SAJU.STEM_EL[st], el = EL[ei], ty = TYPES[st], nm = name;
   const dayWord = sameDay ? '우리 집에서 태어난' : mode === 'family' ? '가족이 된' : '태어난';
   last = {name, a: m, mode, dayWord, cp, st, el, ty};
   resultShown = true; $('#result').hidden = false;
-  logEvent({ t: 'saju', kind: kind === 'cat' ? '고양이' : '강아지', name, adopt: [a ? '가족 ' + pad(a) : '', b ? '생일 ' + pad(b) : ''].filter(Boolean).join(' / '), born: sameDay, ptype: ty.name, score: cp ? cp.score : '궁합 안 봄' });
+  logEvent({ t: 'saju', kind: kind === 'cat' ? '고양이' : '강아지', name, adopt: [a ? '가족 ' + pad(a) : '', b ? '생일 ' + pad(b) : ''].filter(Boolean).join(' / ') + (tm ? ` ${String(tm[0]).padStart(2,'0')}:${String(tm[1]).padStart(2,'0')}` : ''), born: sameDay, ptype: ty.name, score: cp ? cp.score : '궁합 안 봄' });
   const ph = $('#rphoto'); ph.style.background = el.bg; ph.style.color = el.fg;
   ph.innerHTML = photoURL ? `<img src="${photoURL}" alt="${esc(nm)} 사진">` : `<span class="han">${SAJU.STEMS[st]}</span>`;
   const hd = $('#rhead'); hd.style.background = el.bg; hd.style.color = el.fg;
@@ -536,8 +543,8 @@ function render(name, kind, a, b, o) {
   $('#rtitle').innerHTML = `${esc(nm)}${jo(nm,'은','는')}<br>${esc(ty.name)}.`;
   $('#rline').textContent = ty.line;
   $('#rchips').innerHTML = ty.keys.map(k => `<span>${esc(k)}</span>`).join('');
-  $('#rpil').innerHTML = pet.pillars.map((p,i) => `<div class="${i===2?'on':''}"><small>${['연','월','일'][i]}</small><span class="han">${SAJU.han(p)}</span></div>`).join('');
-  $('#rnote').textContent = '태어난 시간이 없어 세 기둥으로 풀었어요.' + (pet.boundary ? ' 이 날은 절기가 바뀌는 날이라 월주가 하루 중 시각에 따라 달라질 수 있어요.' : '');
+  $('#rpil').innerHTML = pet.pillars.map((p,i) => `<div class="${i===2?'on':''}"><small>${['연','월','일','시'][i]}</small><span class="han">${SAJU.han(p)}</span></div>`).join('');
+  $('#rnote').textContent = (tm ? `${mode === 'birth' ? '태어난' : '데려온'} 시간까지 네 기둥으로 풀었어요.` + (tm[0] * 60 + tm[1] >= 1410 ? ' 밤 11시 반~자정은 학파에 따라 다음 날로 보기도 해요.' : '') : '시간을 몰라 세 기둥으로 풀었어요. 시간을 알면 네 기둥으로 더 자세히 볼 수 있어요.') + (pet.boundary ? ' 이 날은 절기가 바뀌는 날이라 월주가 하루 중 시각에 따라 달라질 수 있어요.' : '');
   $('#rabout').innerHTML = ty.about.map(t => `<p>${esc(t)}</p>`).join('');
   $('#rlists').innerHTML = [['이런 걸 좋아해요',ty.likes,el.bar],['이럴 땐 예민해요',ty.careful,'#8a8a8a'],['보호자 사용설명서',ty.tips,'#C42A1E']].map(([h,arr,c]) => `<div class="box" style="--dot:${c}"><h4>${h}</h4><ul>${li(arr)}</ul></div>`).join('');
   $('#rbars').innerHTML = pet.counts.map((n,i) => `<div class="bar"><span>${EL[i].han} ${EL[i].ko}</span><i><b style="width:${Math.min(100, Math.round(n/3*100))}%;background:${EL[i].bar}"></b></i><em>${n}</em></div>`).join('');
@@ -787,6 +794,14 @@ $('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2')
 
 
 
+
+
+{ const sync = () => { const bm = document.querySelector('input[name=dtype]:checked').value === 'birth';
+    $('#birthf').hidden = bm; $('#tlabel').firstChild.textContent = bm ? '태어난 시간 ' : '데려온 시간 ';
+    const la = $('label[for=adopt]'); la.firstChild.textContent = bm ? '생일 ' : '우리 가족이 된 날 '; la.querySelector('span').textContent = bm ? '(태어난 날)' : '(입양일 또는 생일)'; };
+  document.querySelectorAll('input[name=dtype]').forEach(r => r.addEventListener('change', sync));
+  try { const s = JSON.parse(localStorage.getItem('baldojang-form') || '{}'); if (s.dtype) { const r = document.querySelector(`input[name=dtype][value=${s.dtype}]`); if (r) r.checked = true; } if (s.time) $('#btime').value = s.time; } catch (e) {}
+  sync(); }
 
 // ---- 구글 시트 기록 (방문 / 사주)
 const LOG_URL = 'https://script.google.com/macros/s/AKfycbziaB8gRR0k3Y6QbMhoei-HDmzLOQntaPPP44TpTvAiVJXkYUHLLDuL_ea_jmF10ISS/exec';
