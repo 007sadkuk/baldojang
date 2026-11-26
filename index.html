@@ -291,8 +291,8 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <section class="share"><div class="wrap">
 <canvas id="cv" width="1080" height="1350" aria-label="공유 카드 미리보기"></canvas>
 <div style="display:grid;gap:22px">
-<h3 style="font-size:clamp(30px,3.6vw,42px)">발도장 쾅,<br>공유 카드가 나왔어요.</h3>
-<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-r" type="button" id="save">공유 카드 저장</button><a class="btn btn-o" href="#saju">다른 아이도 보기</a></div>
+<h3 style="font-size:clamp(30px,3.6vw,42px)">발도장 쾅,<br>결과를 자랑해 보세요.</h3>
+<div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn btn-r" type="button" id="shareRes">결과 공유하기</button><button class="btn btn-o" type="button" id="save">카드 저장</button><a class="btn btn-o" href="#saju">다른 아이도 보기</a></div>
 <p class="note" id="savemsg"></p>
 <div style="display:grid;gap:10px;margin-top:8px"><b style="font-size:17px">이 결과, 우리 아이랑 맞나요?</b><div class="fb"><button type="button" data-fb="1">맞아요</button><button type="button" data-fb="0">글쎄요</button></div><p class="note" id="fbmsg"></p></div>
 </div>
@@ -878,6 +878,25 @@ function saveCanvas(cv, msg, label, imgId) {
     img.src = URL.createObjectURL(blob); cv.hidden = true;
   }, 'image/png');
 }
+
+$('#shareRes').addEventListener('click', () => {
+  if (!last) return;
+  const msg = $('#savemsg'), nm = last.name;
+  const text = `${nm}${jo(nm,'은','는')} ${last.ty.name}! 보호자와의 궁합 ${last.cp.score}점 🐾 우리 아이 사주도 봐요`;
+  const url = location.origin + location.pathname;
+  logEvent({ t: 'view', page: '결과 공유', ref: '사이트 안 이동', device: DEVICE });
+  $('#cv').toBlob(async blob => {
+    try {
+      if (blob && navigator.canShare) {
+        const file = new File([blob], `${nm}_발도장.png`, { type: 'image/png' });
+        if (navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: '발도장', text: `${text}\n${url}` }); msg.textContent = ''; return; }
+      }
+      if (navigator.share) { await navigator.share({ title: '발도장', text, url }); return; }
+    } catch (e) { if (e && e.name === 'AbortError') return; }
+    try { await navigator.clipboard.writeText(`${text}\n${url}`); msg.textContent = '공유 문구와 주소를 복사했어요. 카톡이나 인스타에 붙여넣어 주세요.'; }
+    catch (e) { msg.textContent = `이 주소를 복사해 공유해 주세요: ${url}`; }
+  }, 'image/png');
+});
 $('#save').addEventListener('click', () => saveCanvas($('#cv'), $('#savemsg'), '궁합', 'cvimg'));
 }
 </script>
