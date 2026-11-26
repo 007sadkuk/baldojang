@@ -240,6 +240,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div class="f"><label for="owner">보호자 생년월일 (양력)</label><input type="text" id="owner" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="1990.03.15"><span class="hint">음력 생일이라면 양력으로 바꿔 넣어 주세요.</span></div>
 <p class="err" id="err" role="alert"></p>
 <button class="btn btn-r" type="submit">사주 보기</button>
+<p class="note" style="color:var(--sub)">아이 이름·종류·가족이 된 날과 결과는 서비스 개선을 위해 저장돼요. 보호자·가족 생년월일과 사진은 저장하지 않아요.</p>
 </form>
 </div></section>
 
@@ -304,7 +305,7 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 </div></section>
 </div>
 
-<footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="lt"><span class="han">발도장</span><small>with 시우미</small></span></span><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 입력한 날짜와 사진은 이 화면 안에서만 계산되고 저장·전송되지 않아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
+<footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="lt"><span class="han">발도장</span><small>with 시우미</small></span></span><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 사주를 보면 아이 이름, 종류, 가족이 된 날, 결과(성향·점수)가 서비스 개선을 위해 저장돼요. 보호자·가족 생년월일과 사진은 저장하지 않아요. 방문 기록은 본 화면, 들어온 곳, 기기 종류만 남아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
 
 <script>
 const SAJU = (() => {
@@ -525,6 +526,7 @@ function render(name, kind, a, b, o, born) {
   const st = pet.dayStem, ei = SAJU.STEM_EL[st], el = EL[ei], ty = TYPES[st], nm = name;
   last = {name, a, cp, st, el, ty};
   resultShown = true; $('#result').hidden = false;
+  logEvent({ t: 'saju', kind: kind === 'cat' ? '고양이' : '강아지', name, adopt: pad(a), born: !!born, ptype: ty.name, score: cp.score });
   const ph = $('#rphoto'); ph.style.background = el.bg; ph.style.color = el.fg;
   ph.innerHTML = photoURL ? `<img src="${photoURL}" alt="${esc(nm)} 사진">` : `<span class="han">${SAJU.STEMS[st]}</span>`;
   const hd = $('#rhead'); hd.style.background = el.bg; hd.style.color = el.fg;
@@ -782,6 +784,24 @@ $('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2')
   try { if (JSON.parse(localStorage.getItem('baldojang-form')||'{}').born) { bh.checked = true; } } catch(e) {}
   sync(); }
 
+
+// ---- 구글 시트 기록 (방문 / 사주)
+const LOG_URL = 'https://script.google.com/macros/s/AKfycbziaB8gRR0k3Y6QbMhoei-HDmzLOQntaPPP44TpTvAiVJXkYUHLLDuL_ea_jmF10ISS/exec';
+const LOG_ON = !/claude|localhost|127\.0\.0\.1|^$/.test(location.hostname);
+function logEvent(o) {
+  if (!LOG_ON) return;
+  const body = JSON.stringify(o);
+  try { if (navigator.sendBeacon && navigator.sendBeacon(LOG_URL, new Blob([body], { type: 'text/plain' }))) return; } catch (e) {}
+  try { fetch(LOG_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body, keepalive: true }).catch(() => {}); } catch (e) {}
+}
+const DEVICE = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? '휴대폰' : 'PC';
+let lastPage = null, firstView = true;
+function logView(page) {
+  if (page === lastPage) return; lastPage = page;
+  let ref = '사이트 안 이동';
+  if (firstView) { try { ref = document.referrer ? new URL(document.referrer).hostname : '직접 접속'; } catch (e) { ref = '알 수 없음'; } firstView = false; }
+  logEvent({ t: 'view', page, ref, device: DEVICE });
+}
 // ---- 화면 전환: 홈 / 가족을 기다리는 아이들 / 집을 찾는 아이들
 var resultShown = false;
 function route() {
@@ -790,6 +810,7 @@ function route() {
   $('#result').hidden = sub || !resultShown;
   $('#waiting').hidden = h !== 'waiting'; $('#lost').hidden = h !== 'lost'; document.body.classList.toggle('sub', sub); topCheck();
   document.querySelectorAll('[data-nav]').forEach(a => a.classList.toggle('on', a.dataset.nav === h));
+  logView(sub ? (h === 'waiting' ? '가족을 기다리는 아이들' : '집을 찾는 아이들') : '홈');
   if (sub) window.scrollTo(0, 0);
   else if (h) { const el = document.getElementById(h); if (el) el.scrollIntoView(); }
   else window.scrollTo(0, 0);
