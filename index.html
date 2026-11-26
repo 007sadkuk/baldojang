@@ -173,6 +173,7 @@ input.tm{height:56px;font:600 18px 'Pretendard',sans-serif;color:var(--ink);back
 .coupon{padding:0 0 clamp(56px,7vw,96px)}.coupon a{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between;background:#141414;color:#fff;border-radius:14px;padding:26px 28px;text-decoration:none}
 .coupon b{font-size:clamp(20px,2.4vw,26px);letter-spacing:-.03em}.coupon span{color:#cfcfcf;font-size:15px}.coupon u{text-decoration:none;background:var(--red);border-radius:999px;padding:12px 22px;font-weight:700;white-space:nowrap}
 .idf{display:grid;gap:14px;max-width:560px}.idf input{height:50px}
+.siumelinks a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;align-items:center}footer p{color:#bbb;font-size:13px;max-width:640px;line-height:1.6}
 @media(prefers-reduced-motion:no-preference){#result:not([hidden]) .r-head h2{animation:up .6s ease both}@keyframes up{from{opacity:0;transform:translateY(16px)}}}
 </style>
@@ -329,10 +330,10 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <p class="ad">아래 링크는 쿠팡 상품 검색으로 연결돼요. 제휴·광고 링크가 아니며, 발도장은 구매에 따른 수수료를 받지 않아요.</p>
 <div class="goods" id="goods"></div></div></div>
 </div></section>
-<section class="coupon" id="coupon" hidden><div class="wrap"><a id="couponLink" href="#" target="_blank" rel="noopener"><div style="display:grid;gap:6px"><b id="couponTitle"></b><span id="couponSub"></span></div><u>쿠폰 받으러 가기 →</u></a></div></section>
+<section class="coupon" id="coupon" hidden><div class="wrap"><a id="couponLink" href="#" target="_blank" rel="noopener"><div style="display:grid;gap:6px"><b id="couponTitle"></b><span id="couponSub"></span></div><u id="couponBtn">스마트스토어에서 보기 →</u></a></div></section>
 </div>
 
-<footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="lt"><span class="han">발도장</span><small>with 시우미</small></span></span><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 사주를 보면 아이 이름, 종류, 가족이 된 날, 결과(성향·점수)가 서비스 개선을 위해 저장돼요. 보호자·가족 생년월일과 사진은 저장하지 않아요. 방문 기록은 본 화면, 들어온 곳, 기기 종류만 남아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
+<footer><div class="wrap"><span class="logo" style="font-size:20px"><svg class="seal" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="7" fill="#C42A1E"/><g fill="#fff"><ellipse cx="20" cy="26" rx="8.5" ry="7"/><ellipse cx="10.5" cy="17" rx="3.4" ry="4.2" transform="rotate(-20 10.5 17)"/><ellipse cx="16.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="23.5" cy="11" rx="3.4" ry="4.4"/><ellipse cx="29.5" cy="17" rx="3.4" ry="4.2" transform="rotate(20 29.5 17)"/></g></svg><span class="lt"><span class="han">발도장</span><small>with 시우미</small></span></span><p class="siumelinks"><a class="siumeLink" data-w="홈페이지" href="https://www.siume.co.kr" target="_blank" rel="noopener">시우미 홈페이지</a> · <a class="siumeLink" data-w="스마트스토어" href="https://smartstore.naver.com/siume/products/13628467515" target="_blank" rel="noopener">시우미 킁킁세제 (스마트스토어)</a></p><p>재미로 보는 콘텐츠예요. 성향 풀이는 명리의 일간·오행 개념을 바탕으로 재미있게 쓴 글이에요. 사주를 보면 아이 이름, 종류, 가족이 된 날, 결과(성향·점수)가 서비스 개선을 위해 저장돼요. 보호자·가족 생년월일과 사진은 저장하지 않아요. 방문 기록은 본 화면, 들어온 곳, 기기 종류만 남아요. 절기 당일은 시각에 따라 월주가 달라질 수 있어요.</p></div></footer>
 
 <script>
 const SAJU = (() => {
@@ -943,7 +944,7 @@ $('#shareRes').addEventListener('click', () => {
 });
 
 // ---- 시우미 쿠폰 (주소가 정해지면 url만 채우면 배너가 보여요)
-const SIUME_COUPON = { url: '', title: '발도장 친구 전용 · 시우미 킁킁세제 할인', sub: '반려동물과 함께 사는 집을 위한 세제, 발도장 이용자에게만 드려요.' };
+const SIUME_COUPON = { url: 'https://smartstore.naver.com/siume/products/13628467515', title: '발도장을 만든 시우미의 킁킁세제', sub: '발도장은 시우미가 만들었어요. 우리 제품도 한번 구경해 주세요.', btn: '스마트스토어에서 보기 →' };
 // ---- 오늘의 산책운
 const WALK = {
   help: { s: 5, t: '기운을 듬뿍 받는 날', d: '오늘의 기운이 {n}의 기운을 북돋아요. 컨디션 좋고 기분도 좋은 날, 평소보다 조금 길게 걸어도 좋아요.' },
@@ -979,7 +980,7 @@ function renderExtra(nm, pet, kind, el) {
   } else $('#vsres').hidden = true;
   $('#idmsg').textContent = ''; $('#cv3').hidden = true; $('#idSave').hidden = true;
   const ci = $('#cvimg3'); if (ci) ci.remove();
-  if (SIUME_COUPON.url) { $('#couponLink').href = SIUME_COUPON.url; $('#couponTitle').textContent = SIUME_COUPON.title; $('#couponSub').textContent = SIUME_COUPON.sub; $('#coupon').hidden = false; }
+  if (SIUME_COUPON.url) { $('#couponLink').href = SIUME_COUPON.url; $('#couponTitle').textContent = SIUME_COUPON.title; $('#couponSub').textContent = SIUME_COUPON.sub; $('#couponBtn').textContent = SIUME_COUPON.btn; $('#coupon').hidden = false; }
 }
 // ---- 궁합 대결 링크 읽기
 let VS = null;
@@ -1037,6 +1038,9 @@ try {
   }
 } catch (e) {}
 
+
+$('#couponLink').addEventListener('click', () => logEvent({ t: 'view', page: '시우미 스토어 클릭(결과)', ref: '사이트 안 이동', device: DEVICE }));
+document.querySelectorAll('.siumeLink').forEach(a => a.addEventListener('click', () => logEvent({ t: 'view', page: '시우미 ' + a.dataset.w + ' 클릭', ref: '사이트 안 이동', device: DEVICE })));
 $('#save').addEventListener('click', () => saveCanvas($('#cv'), $('#savemsg'), '궁합', 'cvimg'));
 }
 </script>
