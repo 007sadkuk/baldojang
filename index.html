@@ -139,7 +139,13 @@ input[type=file]{font:15px 'Pretendard',sans-serif;color:var(--sub)}
 .anv{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:28px;align-items:start}.anv canvas,.anv img{width:100%;max-width:360px;border-radius:8px;display:block}
 .sws{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.sw{display:grid;gap:8px}.sw i{display:block;aspect-ratio:1;border-radius:10px;border:1px solid rgba(128,128,128,.25)}.sw b{font-size:14px;font-weight:700}.sw small{font-size:12px;color:var(--sub);font-variant-numeric:tabular-nums}
 .use{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:12px}
-.dgrid{display:grid;grid-template-columns:auto 1fr minmax(110px,160px);gap:8px 10px;align-items:center}.dgrid>label{font-weight:700;font-size:16px;padding-right:6px;white-space:nowrap}.dgrid>small{font-size:13px;color:var(--sub);font-weight:600}
+.dgrid{display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:center}.dgrid>label{font-weight:700;font-size:16px;padding-right:6px;white-space:nowrap}.dgrid>small{font-size:13px;color:var(--sub);font-weight:600}
+.tw{display:flex;gap:6px;align-items:center}
+.tw select,.tw input{height:56px;font:600 18px 'Pretendard',sans-serif;color:var(--ink);background:var(--bg);border:1.5px solid light-dark(#cfcac2,#3a3a3a);border-radius:12px;padding:0 10px}
+.tw select{width:84px}.tw input{width:58px;text-align:center;padding:0}
+.tw select:focus,.tw input:focus{outline:2px solid var(--red);outline-offset:1px}
+.tw i{font-style:normal;color:var(--sub);font-size:14px}
+@media(max-width:620px){.dgrid{grid-template-columns:auto 1fr}.dgrid>.tw{grid-column:2}.dgrid>small:nth-of-type(2){display:none}}
 .dtrow{display:grid;grid-template-columns:1fr minmax(120px,170px);gap:10px;align-items:end}
 .dtw{position:relative;display:block}.dtw input.dt{padding-right:52px}
 .cal{position:absolute;right:6px;bottom:6px;width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center}.cal:hover{background:var(--soft)}
@@ -260,13 +266,13 @@ footer{background:#141414;color:#fff;padding:40px 0}footer .wrap{display:flex;fl
 <div class="f"><span class="lab">종류</span><div class="pills" role="radiogroup" aria-label="종류">
 <label class="pill"><input type="radio" name="kind" value="dog" checked><span>강아지</span></label>
 <label class="pill"><input type="radio" name="kind" value="cat"><span>고양이</span></label></div></div>
-<div class="f"><span class="lab">날짜 <span style="font-weight:400;color:var(--sub)">(둘 중 하나는 꼭 넣어 주세요)</span></span>
+<div class="f"><span class="lab">날짜</span>
 <div class="dgrid">
 <span></span><small>날짜</small><small>시간 <span style="font-weight:400;color:var(--sub)">(선택)</span></small>
-<label for="adopt">입양일</label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><input type="time" id="btime" class="tm" aria-label="데려온 시간(선택)">
-<label for="birth">생일</label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><input type="time" id="btime2" class="tm" aria-label="태어난 시간(선택)">
+<label for="adopt">우리 가족이 된 날</label><input type="text" id="adopt" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2023.05.03"><input type="hidden" id="btime" class="tm" aria-label="데려온 시간">
+<label for="birth">태어난 날</label><input type="text" id="birth" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="2021.03.12"><input type="hidden" id="btime2" class="tm" aria-label="태어난 시간">
 </div>
-<span class="hint">숫자만 넣어도 돼요 (예: 20230503). 입양일을 모르면 처음 만난 날도 괜찮아요.<br>시간까지 알면 더 자세히 풀어요.</span></div>
+<span class="hint">우리 가족이 된 날이나 태어난 날 중 하나는 꼭 적어 주세요. 둘 다 적으면 더 정확해요.<br>시간까지 알면 더 자세히 풀어 드려요. 숫자만 적어도 돼요. (예: 20230503)</span></div>
 <div class="f"><label for="photo">아이 사진 <span style="font-weight:400;color:var(--sub)">(선택)</span></label><input type="file" id="photo" accept="image/*"><span class="hint">사진은 이 화면 안에서만 쓰이고 어디에도 올라가지 않아요.</span></div>
 <div class="f"><label for="owner">보호자 생년월일 <span style="font-weight:400;color:var(--sub)">(선택 · 넣으면 궁합이 나와요)</span></label><input type="text" id="owner" class="dt" inputmode="numeric" autocomplete="off" maxlength="10" placeholder="1990.03.15"><span class="hint">궁합을 보려면 넣어 주세요. 음력 생일이라면 양력으로 바꿔 넣어 주세요.</span></div>
 <p class="err" id="err" role="alert"></p>
@@ -576,10 +582,12 @@ $('#f').addEventListener('submit', e => {
   const tq = id => { const v = /^(\d{1,2}):(\d{2})/.exec($(id).value || ''); return v ? [+v[1], +v[2]] : null; };
   const t1 = tq('#btime'), t2 = tq('#btime2'), tm = a ? t1 : t2, tb = a ? t2 : null, dtype = a ? 'adopt' : 'birth';
   const err = $('#err');
-  const bad = (id, msg) => { err.textContent = msg; $('#'+id).focus(); };
-  if ($('#adopt').value.trim() && !a) return bad('adopt', '입양일을 다시 확인해 주세요. (예: 2023.05.03)');
+  const bad = (id, msg) => { err.textContent = msg; const e0 = $('#'+id); (e0.type === 'hidden' ? (e0.nextElementSibling && e0.nextElementSibling.querySelector('select')) : e0).focus(); };
+  if ($('#btime').badTime()) return bad('btime', '시간을 다시 확인해 주세요. 오전/오후와 시(1~12), 분(0~59)이에요. 모르면 비워 두세요.');
+  if ($('#btime2').badTime()) return bad('btime2', '시간을 다시 확인해 주세요. 오전/오후와 시(1~12), 분(0~59)이에요. 모르면 비워 두세요.');
+  if ($('#adopt').value.trim() && !a) return bad('adopt', '우리 가족이 된 날을 다시 확인해 주세요. (예: 2023.05.03)');
   if ($('#birth').value.trim() && !b) return bad('birth', '생일을 다시 확인해 주세요. 모르면 비워 두셔도 돼요.');
-  if (!a && !b) return bad('adopt', '입양일이나 생일 중 하나는 넣어 주세요.');
+  if (!a && !b) return bad('adopt', '우리 가족이 된 날이나 태어난 날 중 하나는 넣어 주세요.');
   if ($('#owner').value.trim() && !o) return bad('owner', '보호자 생년월일을 다시 확인해 주세요. (예: 1990.03.15)');
   for (const [p, id, lo] of [[a,'adopt',1950],[b,'birth',1950],[o,'owner',1920]]) { if (!p) continue; if (num(p) > tnum) return bad(id, '미래 날짜는 넣을 수 없어요.'); if (p[0] < lo) return bad(id, `${lo}년 이후 날짜만 계산할 수 있어요.`); }
   if (a && b && num(b) > num(a)) return bad('birth', '생일이 가족이 된 날보다 늦어요. 날짜를 확인해 주세요.');
@@ -859,8 +867,35 @@ $('#save2').addEventListener('click', () => saveCanvas($('#cv2'), $('#savemsg2')
 
 
 
-try { const s = JSON.parse(localStorage.getItem('baldojang-form') || '{}'); if (s.time) $('#btime').value = s.time; if (s.time2) $('#btime2').value = s.time2; } catch (e) {}
+try { const s = JSON.parse(localStorage.getItem('baldojang-form') || '{}'); $('#btime').setTime(s.time); $('#btime2').setTime(s.time2); } catch (e) {}
 
+
+// ---- 시간 입력: 오전/오후 + 시 + 분 (숨은 칸에 HH:MM 저장)
+function attachTime(h) {
+  if (h.dataset.tw) return; h.dataset.tw = '1';
+  const w = document.createElement('div'); w.className = 'tw';
+  w.innerHTML = '<select aria-label="오전 오후"><option value="">--</option><option value="am">오전</option><option value="pm">오후</option></select><input type="text" inputmode="numeric" maxlength="2" placeholder="시" aria-label="시"><i>시</i><input type="text" inputmode="numeric" maxlength="2" placeholder="분" aria-label="분"><i>분</i>';
+  h.after(w);
+  const [ap, hh, mm] = [w.querySelector('select'), ...w.querySelectorAll('input')];
+  const upd = () => {
+    const H = hh.value.trim(), M = mm.value.trim();
+    if (!ap.value || H === '') { h.value = ''; return; }
+    let hv = +H, mv = M === '' ? 0 : +M;
+    if (!(hv >= 1 && hv <= 12) || !(mv >= 0 && mv <= 59)) { h.value = ''; return; }
+    hv = hv % 12 + (ap.value === 'pm' ? 12 : 0);
+    h.value = `${String(hv).padStart(2, '0')}:${String(mv).padStart(2, '0')}`;
+  };
+  [hh, mm].forEach(x => x.addEventListener('input', () => { x.value = x.value.replace(/\D/g, '').slice(0, 2); upd(); }));
+  hh.addEventListener('input', () => { if (hh.value.length === 2 && +hh.value >= 1 && +hh.value <= 12) mm.focus(); });
+  ap.addEventListener('change', () => { upd(); if (ap.value) hh.focus(); });
+  h.setTime = v => {
+    const m = /^(\d{1,2}):(\d{2})$/.exec(v || '');
+    if (!m) { ap.value = ''; hh.value = ''; mm.value = ''; h.value = ''; return; }
+    const H = +m[1]; ap.value = H >= 12 ? 'pm' : 'am'; hh.value = String(H % 12 === 0 ? 12 : H % 12); mm.value = m[2]; h.value = `${String(H).padStart(2, '0')}:${m[2]}`;
+  };
+  h.badTime = () => (ap.value || hh.value.trim() || mm.value.trim()) && !h.value;
+}
+document.querySelectorAll('input.tm').forEach(attachTime);
 // ---- 구글 시트 기록 (방문 / 사주)
 const LOG_URL = 'https://script.google.com/macros/s/AKfycbziaB8gRR0k3Y6QbMhoei-HDmzLOQntaPPP44TpTvAiVJXkYUHLLDuL_ea_jmF10ISS/exec';
 const LOG_ON = !/claude|localhost|127\.0\.0\.1|^$/.test(location.hostname);
@@ -897,7 +932,7 @@ window.addEventListener('scroll', topCheck, { passive: true });
 window.addEventListener('hashchange', route);
 function goHome(e) {
   if (e) e.preventDefault();
-  $('#f').reset(); document.querySelectorAll('#f .dt').forEach(x => x.value = '');
+  $('#f').reset(); document.querySelectorAll('#f .dt').forEach(x => x.value = ''); $('#btime').setTime(''); $('#btime2').setTime('');
   if (typeof photoURL !== 'undefined' && photoURL) { try { URL.revokeObjectURL(photoURL); } catch (er) {} photoURL = null; }
   $('#result').hidden = true; $('#err').textContent = ''; $('#shp').hidden = true; $('#savemsg').textContent = '';
   VS = null; $('#vsban').hidden = true; last = null; resultShown = false;
