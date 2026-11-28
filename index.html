@@ -429,11 +429,25 @@ function compat(pet, owner, L) {
   const pair = BRS[ob] + BRS[pb];
   if (mod(pb + ob, 12) === 1) { B = 10; reasons.push([10, `${pair} 육합 — 생활 리듬이 찰떡이에요`]); }
   else if (pb !== ob && pb % 4 === ob % 4) { B = 7; reasons.push([7, `${pair} 반합 — 같은 방향을 바라봐요`]); }
-  else if (Math.abs(pb - ob) === 6) { B = -5; reasons.push([-5, `${pair} 충 — 리듬이 달라 가끔 티격태격해요`]); }
+  else if (Math.abs(pb - ob) === 6) { B = -3; reasons.push([-3, `${pair} 충 — 리듬이 달라 가끔 티격태격해요`]); }
   let C = 0;
   for (let e = 0; e < 5; e++) if (owner.counts[e] === 0 && pet.counts[e] > 0 && C < 10) { C += 5; reasons.push([5, `${o}에게 없는 ${E(e)} 기운을 ${pp}${jo(pp,'이','가')} 채워줘요`]); }
-  const score = Math.max(60, Math.min(99, 60 + A + B + C));
-  return { score, type, A, B, C, reasons };
+  // 세부 조화 (작은 가산점) — 점수를 1점 단위로 흩어 주는 항목
+  let D = 0, E2 = 0, F = 0, G = 0;
+  const pm = pet.pillars[1][1], om = owner.pillars[1][1], py = pet.pillars[0][1], oy = owner.pillars[0][1];
+  const rel = (x, y) => mod(x + y, 12) === 1 ? 'hap' : (x !== y && x % 4 === y % 4) ? 'ban' : x === y ? 'same' : '';
+  const rm = rel(pm, om), ry = rel(py, oy);
+  if (rm === 'hap') { D = 4; reasons.push([4, `태어난 계절의 조화 — ${BRS[om]}${BRS[pm]} 월지가 서로 손을 잡아요`]); }
+  else if (rm === 'ban') { D = 2; reasons.push([2, `태어난 계절의 조화 — ${BRS[om]}${BRS[pm]} 월지가 같은 방향이에요`]); }
+  else if (rm === 'same') { D = 1; reasons.push([1, `태어난 계절의 조화 — 같은 계절의 기운을 타고났어요`]); }
+  if (ry === 'hap') { E2 = 3; reasons.push([3, `띠의 인연 — ${BRS[oy]}${BRS[py]} 띠가 서로 잘 맞아요`]); }
+  else if (ry === 'ban') { E2 = 2; reasons.push([2, `띠의 인연 — ${BRS[oy]}${BRS[py]} 띠가 같은 방향이에요`]); }
+  const cover = pet.counts.map((n, i) => (n + owner.counts[i]) > 0 ? 1 : 0).reduce((s, v) => s + v, 0);
+  if (cover === 5) { F = 3; reasons.push([3, '다섯 기운 균형 — 둘이 합치면 오행이 빠짐없이 갖춰져요']); }
+  else if (cover === 4) { F = 1; reasons.push([1, '다섯 기운 균형 — 둘이 합치면 거의 다 갖춰져요']); }
+  if (Math.abs(ps - os) % 2 === 1) { G = 2; reasons.push([2, '음양의 어울림 — 한쪽이 앞서면 한쪽이 받쳐 주는 사이']); }
+  const score = Math.max(60, Math.min(99, 60 + A + B + C + D + E2 + F + G));
+  return { score, type, A, B, C, D, E: E2, F, G, reasons };
 }
 return { chart, compat, han, ko, jo, STEMS, BRS, STEM_EL, BR_EL, EL_KO, EL_HAN };
 })();
